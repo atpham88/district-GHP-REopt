@@ -1,0 +1,4 @@
+﻿Site,latitude,longitude,GHP_building_sqft,ExistingBoiler_fuel_cost_per_mmbtu
+building_1,39.99153232,-105.2648427,10000,37.5
+building_2,39.99153232,-105.2648427,10000,38.2
+building_3,39.99153232,-105.2648427,10000,39.5
