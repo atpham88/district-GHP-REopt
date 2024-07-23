@@ -85,9 +85,9 @@ for building in building_set:
     ghpghx_output["outputs"]["length_boreholes_ft"] = length_of_boreholes
 
     # Dispatch output:
-    ghpghx_output["outputs"]["yearly_heating_heatpump_electric_consumption_series_kw"] = list(building_ghp_output_kw)
-    ghpghx_output["outputs"]["yearly_cooling_heatpump_electric_consumption_series_kw"] = list(building_ghp_output_kw*0)
-    ghpghx_output["outputs"]["yearly_total_electric_consumption_series_kw"] = list(building_ghp_output_kw)
+    ghpghx_output["outputs"]["yearly_heating_heatpump_electric_consumption_series_kw"] = list(building_elec_load)
+    ghpghx_output["outputs"]["yearly_cooling_heatpump_electric_consumption_series_kw"] = list(building_elec_load*0)
+    ghpghx_output["outputs"]["yearly_total_electric_consumption_series_kw"] = list(building_elec_load)
 
     ghpghx_output = [ghpghx_output, ghpghx_output]
     post["GHP"]["ghpghx_responses"] = ghpghx_output
