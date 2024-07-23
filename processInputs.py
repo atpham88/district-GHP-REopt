@@ -36,9 +36,6 @@ for building in building_set:
     ghp_scenario['electric_load_tot_'+str(building)] = building_elec_load_tot
     building_elec_load = ghp_scenario['electric_load_tot_'+str(building)]
 
-    building_ghp_output_kw = ghp_scenario['heating_electric_power_'+str(building)]*ghp_scenario['cop_'+str(building)]
-    building_ghp_output = building_ghp_output_kw*0.003412/1000 # in ton
-
     building_spaceheating_load = ghp_scenario['electric_load_tot_'+str(building)]*0
     building_spaceheating_load = building_spaceheating_load*0.003412/1000
 
