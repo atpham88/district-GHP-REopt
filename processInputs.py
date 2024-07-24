@@ -36,13 +36,13 @@ for building in building_set:
     ghp_scenario['electric_load_tot_'+str(building)] = building_elec_load_tot
     building_elec_load = ghp_scenario['electric_load_tot_'+str(building)]
 
-    building_spaceheating_load = ghp_scenario['electric_load_tot_'+str(building)]*0
-    building_spaceheating_load = building_spaceheating_load*0.003412/1000
+    #building_spaceheating_load = ghp_scenario['electric_load_tot_'+str(building)]*0
+    #building_spaceheating_load = building_spaceheating_load*0.003412/1000
 
-    post["SpaceHeatingLoad"] = {}
-    post["DomesticHotWaterLoad"] = {}
-    post["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_spaceheating_load)
-    post["DomesticHotWaterLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_spaceheating_load*0)
+    #post["SpaceHeatingLoad"] = {}
+    #post["DomesticHotWaterLoad"] = {}
+    #post["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_spaceheating_load)
+    #post["DomesticHotWaterLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_spaceheating_load*0)
 
     post["ElectricLoad"] = {}
     post["ElectricLoad"]["loads_kw"] = list(building_elec_load)
@@ -66,24 +66,22 @@ for building in building_set:
     post["GHP"] = {}  
     post["GHP"]["building_sqft"] = floor_area
 
-    post["ExistingBoiler"] = {}
-    post["ExistingBoiler"]["fuel_cost_per_mmbtu"] = 13.5
+    #post["ExistingBoiler"] = {}
+    #post["ExistingBoiler"]["fuel_cost_per_mmbtu"] = 13.5
 
     # GHX:
     with open(os.path.join(data_path, "ghpghx_response.json"), 'rb') as handle:
         ghpghx_output = json.load(handle)
 
-    number_of_boreholes = 65
-    length_of_boreholes = 127.09
     ghx_pump_electric_con = ghp_scenario["electrical_power_consumed"]
-    ghpghx_output["outputs"]["yearly_ghx_pump_electric_consumption_series_kw"] = list(ghx_pump_electric_con)
+    ghpghx_output["outputs"]["yearly_ghx_pump_electric_consumption_series_kw"] = list(ghx_pump_electric_con*0)
     ghpghx_output["outputs"]["peak_combined_heatpump_thermal_ton"] = ghp_size
-    ghpghx_output["outputs"]["number_of_boreholes"] = number_of_boreholes
-    ghpghx_output["outputs"]["length_boreholes_ft"] = length_of_boreholes
+    ghpghx_output["outputs"]["number_of_boreholes"] = 0
+    ghpghx_output["outputs"]["length_boreholes_ft"] = 0
 
     # Dispatch output:
-    ghpghx_output["outputs"]["yearly_heating_heatpump_electric_consumption_series_kw"] = list(building_elec_load)
-    ghpghx_output["outputs"]["yearly_cooling_heatpump_electric_consumption_series_kw"] = list(building_elec_load*0)
+    ghpghx_output["outputs"]["yearly_heating_heatpump_electric_consumption_series_kw"] = list(building_elec_load/2)
+    ghpghx_output["outputs"]["yearly_cooling_heatpump_electric_consumption_series_kw"] = list(building_elec_load/2)
     ghpghx_output["outputs"]["yearly_total_electric_consumption_series_kw"] = list(building_elec_load)
 
     ghpghx_output = [ghpghx_output, ghpghx_output]
@@ -96,4 +94,42 @@ for building in building_set:
     with open(os.path.join(posts_path, 'GHP_building_' + str(building) +'.json'), 'w') as handle:
         json.dump(post, handle)  
     
+# District-level inputs:
+post_dist ={}
+post_dist["Site"] = {}
+post_dist["Site"]["latitude"] = lat
+post_dist["Site"]["longitude"] = lon
 
+post_dist["ElectricLoad"] = {}
+post_dist["ElectricLoad"]["loads_kw"] = list(building_elec_load*0)
+
+with open(os.path.join(data_path, tarrif_file), 'rb') as handle:
+    r = json.load(handle)
+post_dist["ElectricTariff"] = {}    
+post_dist["ElectricTariff"]["urdb_response"] = r
+
+# Read GHX sizes:
+with open(os.path.join(data_path, "ghpghx_response.json"), 'rb') as handle:
+    ghpghx_output = json.load(handle)
+
+number_of_boreholes = 65
+length_of_boreholes = 127.09
+ghx_pump_electric_con = ghp_scenario["electrical_power_consumed"]
+ghpghx_output["outputs"]["yearly_ghx_pump_electric_consumption_series_kw"] = list(ghx_pump_electric_con)
+ghpghx_output["outputs"]["peak_combined_heatpump_thermal_ton"] = 0
+ghpghx_output["outputs"]["number_of_boreholes"] = number_of_boreholes
+ghpghx_output["outputs"]["length_boreholes_ft"] = length_of_boreholes
+
+post_dist["GHP"] = {}  
+post_dist["GHP"]["building_sqft"] = 0
+
+# Dispatch output:
+ghpghx_output["outputs"]["yearly_heating_heatpump_electric_consumption_series_kw"] = list(building_elec_load*0)
+ghpghx_output["outputs"]["yearly_cooling_heatpump_electric_consumption_series_kw"] = list(building_elec_load*0)
+ghpghx_output["outputs"]["yearly_total_electric_consumption_series_kw"] = list(building_elec_load*0)
+
+ghpghx_output = [ghpghx_output, ghpghx_output]
+post_dist["GHP"]["ghpghx_responses"] = ghpghx_output
+
+with open(os.path.join(posts_path, 'GHP_district.json'), 'w') as handle:
+    json.dump(post_dist, handle)  
