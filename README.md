@@ -1,5 +1,6 @@
 ## Summary
-This repo provides scripts to process inputs, run REopt model, and post process outputs to perform LCCA for pre-sized district GHP system.
+- This repo provides scripts to process inputs, run REopt model, and post process outputs to perform LCCA for pre-sized district GHP system.
+- To prepare to run the scripts in this repo, clone the repo and adjust the inputs in `data` folder and `addInputs.py`.
 
 ## How to define input parameters
 Main inputs are defined in `addInputs.py`. This script allows for inputs of GHP/GHX sizes, site location, building level parameters such as floor area, installation and O&M cost of GHP/GHX, utility tarrif, and optional fuel prices and financial incentives.
