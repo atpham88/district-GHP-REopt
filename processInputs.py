@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import json
+from addInputs import addInputs
 
 dir = os.getcwd()
 
@@ -8,39 +9,32 @@ dir = os.getcwd()
 posts_path = os.path.join(dir, 'data', 'inputs_all')
 data_path = os.path.join(dir, 'data')
 
-########## READ INPUTS (URBANopt OUTPUTS) ##########
-bau_scenario = pd.read_csv(os.path.join(data_path, "BAU_scenario.csv"))
-ghp_scenario = pd.read_excel(os.path.join(data_path, "GHP_scenario.xlsx"), sheet_name= "Timeseries")
+################### READ INPUTS ####################
+(lon,lat,buildings_id,number_of_boreholes,length_of_boreholes,building_file,fuel_cost_per_mmbtu,
+ macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,utility_tarrif,om_cost_per_sqft_year,
+ installed_cost_heatpump_per_ton,installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft) = addInputs()
 
-### District inputs:
-## Shared GHX system
-number_of_boreholes = 65
-length_of_boreholes = 127.09
+investment_scenario = pd.read_excel(os.path.join(data_path, building_file), sheet_name= "Timeseries")
+building_ghp_data = pd.read_excel(os.path.join(data_path, building_file), sheet_name= "GHP")
 
-## Site info
-# Number of buildings
-building_no = 2
-building_set = [x+1 for x in list(range(building_no))]
-
-# Location
-lon = -105.2648427
-lat = 39.99153232
-
-# Building-level inputs:
-for building in building_set:
+## Process inputs and save to REopt-format json files
+# Building-level json file
+for building in buildings_id:
     # Site info:
+    building_id = 'building_' + building
+    
     post ={}
     post["Site"] = {}
     post["Site"]["latitude"] = lat
     post["Site"]["longitude"] = lon
     
     # Load input:
-    building_elec_load_tot = ghp_scenario['heating_electric_power_'+str(building)]/1000 + ghp_scenario['pump_power_'+str(building)]/1000 + ghp_scenario['pump_power_'+str(building)]/1000
-    ghp_scenario['electric_load_tot_'+str(building)] = building_elec_load_tot
-    building_elec_load = ghp_scenario['electric_load_tot_'+str(building)]
-    ghx_pump_electric_con = ghp_scenario["electrical_power_consumed"]/1000
+    building_elec_load_tot = investment_scenario['heating_electric_power_'+str(building)]/1000 + investment_scenario['pump_power_'+str(building)]/1000 + investment_scenario['pump_power_'+str(building)]/1000
+    investment_scenario['electric_load_tot_'+str(building)] = building_elec_load_tot
+    building_elec_load = investment_scenario['electric_load_tot_'+str(building)]
+    ghx_pump_electric_con = investment_scenario["electrical_power_consumed"]/1000
 
-    building_spaceheating_load = ghp_scenario['electric_load_tot_'+str(building)]
+    building_spaceheating_load = investment_scenario['electric_load_tot_'+str(building)]
     building_spaceheating_load = building_spaceheating_load*0.000003412/1000
 
     post["SpaceHeatingLoad"] = {}
@@ -52,19 +46,14 @@ for building in building_set:
     post["ElectricLoad"]["loads_kw"] = list(building_elec_load)
 
     # Read individual building's utility tariff
-    tarrif_file = "utility_rates.json"
     post["ElectricTariff"] = {}
-    with open(os.path.join(data_path, tarrif_file), 'rb') as handle:
+    with open(os.path.join(data_path, utility_tarrif), 'rb') as handle:
         r = json.load(handle)
     post["ElectricTariff"]["urdb_response"] = r
 
     # Read GHP and GHX outputs:
-    if building == 1:
-        ghp_size = 36
-        floor_area = 31623
-    elif building == 2:
-        ghp_size = 1
-        floor_area = 8804
+    ghp_size = building_ghp_data[building_id][int(building)-1]
+    floor_area = building_ghp_data[building_id][int(building)]
 
     post["GHP"] = {}  
     post["GHP"]["require_ghp_purchase"] = 1
@@ -108,7 +97,7 @@ for building in building_set:
         json.dump(post, handle)  
     
 # District-level inputs:
-building_spaceheating_load = ghp_scenario['electric_load_tot_'+str(building)]
+building_spaceheating_load = investment_scenario['electric_load_tot_'+str(building)]
 building_spaceheating_load = building_spaceheating_load*0.000003412/1000
 
 post_dist ={}
@@ -144,7 +133,7 @@ ghpghx_output["inputs"] = {}
 ghpghx_output["inputs"]["heating_thermal_load_mmbtu_per_hr"] = list(building_spaceheating_load)
 ghpghx_output["inputs"]["cooling_thermal_load_ton"] = [0] * 8760
 
-ghx_pump_electric_con = ghp_scenario["electrical_power_consumed"]
+ghx_pump_electric_con = investment_scenario["electrical_power_consumed"]
 ghpghx_output["outputs"]["yearly_ghx_pump_electric_consumption_series_kw"] = list(ghx_pump_electric_con)
 ghpghx_output["outputs"]["peak_combined_heatpump_thermal_ton"] = 0
 ghpghx_output["outputs"]["number_of_boreholes"] = number_of_boreholes
