@@ -10,13 +10,10 @@ dir = os.getcwd()
 results_path = os.path.join(dir, 'results', 'results_json')
 result_summary_path = os.path.join(dir, 'results','results_summary')
 
-post_data = 'reopt_post_data.csv' # rows = sites, columns = REopt inputs ## Update for EB
-
 # Add all column headers for output CSV file here (MUST align with order or results added in SaveOutputs)
 colHeaders_types = {
-
     # Main Results
-    "Building Name": str,
+    "ID": str,
     #"LCC BAU [$]": float,
     "LCC [$]": float,
     #"NPV [$]": float,
@@ -66,7 +63,7 @@ def SaveOutputs(res, name, colHeaders):
     fin = r["Financial"]
 
     #capital costs
-    res = np.append(res, "building"+building) # Building Name
+    res = np.append(res, building) # Building Name
     #res = np.append(res, r["Financial"]["lcc_bau"])  # "Analysis Period Elec Costs_BAU [$]", 
     res = np.append(res, r["Financial"]["lcc"])    # "Analysis Period Elec Costs_OPTIMIZED [$]",           
     #res = np.append(res, r["Financial"]["npv"])    # NPV,
@@ -123,13 +120,5 @@ for name in files:
     df.round(3).to_csv("{}/{}_results_summary.csv".format(result_summary_path, date.today()))
     df.round(3).to_csv(os.path.join(dir, "results", "results_summary", "results_summary.csv"))
 
-# Compile all results into a spreadsheet
-list_of_columns = ["Building Name", "LCC [$]", "lifecycle capital costs", "Health Damage Costs [$]", "Annual Emissions Savings [tonnes CO2]"]
-
-excel_filename = "GHP_results.xlsx"
-sheet_name = "all_results"
-
-with pd.ExcelWriter(os.path.join(dir, "results",excel_filename), engine='xlsxwriter') as writer:
-    df.to_excel(writer, sheet_name=sheet_name, index=False)    
 
 

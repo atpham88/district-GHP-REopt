@@ -68,6 +68,7 @@ for building_id in building_set:
     post["GHP"]["require_ghp_purchase"] = 1
     post["GHP"]["building_sqft"] = floor_area
     post["GHP"]["om_cost_per_sqft_year"] = 0
+    post["GHP"]["heatpump_capacity_sizing_factor_on_peak_load"] = 1.0
 
     post["ExistingBoiler"] = {}
     post["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu
@@ -153,7 +154,7 @@ for ghx_id in ghx_set:
     post_dist["GHP"]["require_ghp_purchase"] = 1
     post_dist["GHP"]["building_sqft"] = 0
     post_dist["GHP"]["om_cost_per_sqft_year"] = 0
-
+    post_dist["GHP"]["heatpump_capacity_sizing_factor_on_peak_load"] = 1.0
 
     # Dispatch output:
     ghpghx_output["outputs"]["yearly_heating_heatpump_electric_consumption_series_kw"] = list(building_elec_load*0)
