@@ -9,25 +9,12 @@ def addInputs():
     district_file = 'GHP_scenario_district.csv'  # REQUIRED 
                                     # This file include GHX size (borehole #, length) and 
                                     # Site location (lon, lat) 
-    # Site                      
-    #lon = -105.2648427              # REQUIRED
-    #lat = 39.99153232               # REQUIRED
-    #buildings_id = ['1','2']        # REQUIRED (building id should match the ones in URBANopt results file)
-
-    # GHX
-    #number_of_boreholes = 65        # REQUIRED
-    #length_of_boreholes = 127.09    # REQUIRED
 
     # 2. Building inputs
     #####################################################
     building_file = 'GHP_scenario_building.xlsx'  # REQUIRED 
                                     # This file include timeseries of electric consumption, 
                                     # GHP size, floor area for each building
-
-    # 3. Fuel prices (For BAU scenario and REopt format)
-    #####################################################
-    #fuel_cost_per_mmbtu = 13.5
-
 
     # 3. Capital costs 
     # OPTIONAL, if not provided ('NA'), 
