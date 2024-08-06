@@ -15,36 +15,36 @@ colHeaders_types = {
     # Main Results
     "ID": str,
     #"LCC BAU [$]": float,
-    "LCC [$]": float,
+    "lcc": float,
     #"NPV [$]": float,
     #"Analysis Period Elec Cost Savings [%]": float,
-    "lifecycle capital costs": float,
+    "lifecycle_capital_costs": float,
 
     ## LCC Breakdown
     "lifecycle_om_costs_after_tax": float,
     "lifecycle_capital_costs_plus_om_after_tax": float,
     "lifecycle_elecbill_after_tax": float,
     "lifecycle_emissions_cost_climate": float,
-    "REopt Solver Seconds": float,
+    "REopt Solver [seconds]": float,
 
     #"Simple Payback [years]": float,
-    "Initial Capital Costs After Incentives [$]": float,
+    "Initial Capital Costs After Incentives": float,
     
     "Annual Load [kWh]": float,
  
     #"Year One Bill_BAU [$]": float,
-    "Year One Bill [$]": float,
+    "Year One Bill": float,
     #"Year One Bill Savings [$]": float,
 
     #"Analysis Period Emissions_BAU [tonnes CO2]": float,
-    "Analysis Period Emissions [tonnes CO2]": float,
+    "lifecycle_emissions_tonnes_CO2": float,
     #"Analysis Period Emissions Savings [tonnes CO2]": float,
     #"Analysis Period Emissions Savings [%]": float,
     #"Analysis Period Emissions Savings [%] - Check": float,
     #"Annual Emissions_BAU [tonnes CO2]": float,
     "Annual Emissions [tonnes CO2]": float,
     #"Annual Emissions Savings [tonnes CO2]": float,
-    "Health Damage Costs [$]": float
+    "lifecycle_emissions_cost_health": float
     
 }
 colHeaders = [i for i in colHeaders_types.keys()]
@@ -117,8 +117,32 @@ for name in files:
     for col, col_type in colHeaders_types.items():
         df[col] = df[col].astype(col_type)
     
-    df.round(3).to_csv("{}/{}_results_summary.csv".format(result_summary_path, date.today()))
-    df.round(3).to_csv(os.path.join(dir, "results", "results_summary", "results_summary.csv"))
+    #df.round(3).to_csv("{}/{}_results_summary.csv".format(result_summary_path, date.today()))
+    df.round(3).to_csv(os.path.join(dir, "results", "results_summary", "results_summary.csv"),index=False)
 
+## Total district-level outputs
+df = pd.read_csv(os.path.join(dir, "results", "results_summary", "results_summary.csv"),index_col=0)
+df_tot = df.sum(axis="index", skipna=True)
+df_tot = df_tot.to_frame().T
+df_tot.index.name = "ID"
+df_tot = df_tot.rename(index={df_tot.index[0]:"District_Total"})
+
+df_all = pd.concat([df, df_tot])
+df_all.round(3).to_csv(os.path.join(dir, "results", "results_summary", "results_summary.csv"))
+
+## Save result to json file
+json_output = {}
+output_set = df_all.index.to_list()
+attribute_set = ["lcc", "lifecycle_capital_costs", "lifecycle_om_costs_after_tax", "lifecycle_elecbill_after_tax", 
+                 "lifecycle_emissions_cost_climate", "lifecycle_emissions_tonnes_CO2", "lifecycle_emissions_cost_health"]
+
+for output in output_set:
+     json_output[output] = {}
+     for attribute in attribute_set:
+        df_output = df_all.loc[df_all.index==output,df_all.columns==attribute].iloc[0,0]
+        json_output[output][attribute] = df_output
+
+with open(os.path.join(dir, "results", "results_summary", 'district_GHP_output.json'), 'w') as handle:
+        json.dump(json_output, handle)  
 
 

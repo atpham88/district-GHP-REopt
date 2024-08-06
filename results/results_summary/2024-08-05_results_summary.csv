@@ -1,5 +1,0 @@
-,ID,LCC [$],lifecycle capital costs,lifecycle_om_costs_after_tax,Health Damage Costs [$],lifecycle_capital_costs_plus_om_after_tax,lifecycle_elecbill_after_tax,lifecycle_emissions_cost_climate,REopt Solver Seconds,Initial Capital Costs After Incentives [$],Annual Load [kWh],Year One Bill [$],Analysis Period Emissions [tonnes CO2],Annual Emissions [tonnes CO2]
-0,GHX_shkwfn,77335.308,81472.3,0.0,42.15,81472.3,8261.883,66.18,1.812,81472.3,437.663,761.27,1.68,0.067
-1,GHP_building_mksuwer,18062.104,8320.525,0.0,84.29,8320.525,9741.579,132.37,2.785,8320.525,437.663,897.53,3.35,0.134
-2,GHP_building_sdupkgra,238067.391,47962.501,0.0,5085.33,47962.501,190104.89,7779.66,1.384,47962.501,26592.594,17507.35,197.06,7.882
-3,GHX_ahudfd,77335.308,81472.3,0.0,42.15,81472.3,8261.883,66.18,1.398,81472.3,437.663,761.27,1.68,0.067
