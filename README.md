@@ -3,7 +3,7 @@
 - To prepare to run the scripts in this repo, clone the repo and adjust the inputs in `data` folder and `addInputs.py`.
 
 ## How to define input parameters
-- Main input files are defined in `addInputs.py`. This script asks users to input the full file names of GHP and GHX sizes and electric consumptions, as well as utility tarrif, and optional fuel prices and financial incentives.
+- Main input files are defined in `addInputs.py`. This script asks users to input the full file names of GHP and GHX sizes and electric consumptions, as well as utility tarrif, and optional financial incentives.
 - All required GHP and GHX are defined in these files under `data` folder:
   - Timeseries data (including electric consumption of building and GHX) are defined in `GHP_scenario_building.xlsx` tab `Timeseries`. Note that building id is identified at the end of each data field after an `_`. For example, `_sdupkgra` means the timeseries associated with `building_sdupkgra`.
   - GHP sizes and building-level data are defined in `GHP_scenario_building.xlsx` tab `GHP`.
