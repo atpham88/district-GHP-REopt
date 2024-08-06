@@ -1,0 +1,71 @@
+{
+    "GHX_id": {
+        "lcc": {
+            "type": "float"
+        },
+        "lifecycle_capital_costs": {
+            "type": "float"
+        },
+        "lifecycle_om_costs_after_tax": {
+            "type": "float"
+        },
+        "lifecycle_elecbill_after_tax": {
+            "type": "float"
+        },
+        "lifecycle_emissions_cost_climate": {
+            "type": "float"
+        },
+        "lifecycle_emissions_tonnes_CO2": {
+            "type": "float"
+        },
+        "lifecycle_emissions_cost_health": {
+            "type": "float"
+        }
+    },
+    "GHP_building_id": {
+        "lcc": {
+            "type": "float"
+        },
+        "lifecycle_capital_costs": {
+            "type": "float"
+        },
+        "lifecycle_om_costs_after_tax": {
+            "type": "float"
+        },
+        "lifecycle_elecbill_after_tax": {
+            "type": "float"
+        },
+        "lifecycle_emissions_cost_climate": {
+            "type": "float"
+        },
+        "lifecycle_emissions_tonnes_CO2": {
+            "type": "float"
+        },
+        "lifecycle_emissions_cost_health": {
+            "type": "float"
+        }
+    },
+    "District_Total": {
+        "lcc": {
+            "type": "float"
+        },
+        "lifecycle_capital_costs": {
+            "type": "float"
+        },
+        "lifecycle_om_costs_after_tax": {
+            "type": "float"
+        },
+        "lifecycle_elecbill_after_tax": {
+            "type": "float"
+        },
+        "lifecycle_emissions_cost_climate": {
+            "type": "float"
+        },
+        "lifecycle_emissions_tonnes_CO2": {
+            "type": "float"
+        },
+        "lifecycle_emissions_cost_health": {
+            "type": "float"
+        }
+    }
+}
