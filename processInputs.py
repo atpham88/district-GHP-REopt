@@ -40,7 +40,6 @@ for building_id in building_set:
     building_elec_load_tot = investment_scenario['heating_electric_power_'+str(building)]/1000 + investment_scenario['pump_power_'+str(building)]/1000 + investment_scenario['ets_pump_power_'+str(building)]/1000
     investment_scenario['electric_load_tot_'+str(building)] = building_elec_load_tot
     building_elec_load = investment_scenario['electric_load_tot_'+str(building)]
-    ghx_pump_electric_con = investment_scenario["electrical_power_consumed"]/1000
 
     building_spaceheating_load = investment_scenario['electric_load_tot_'+str(building)]
     building_spaceheating_load = building_spaceheating_load*0.000003412/1000
@@ -139,7 +138,7 @@ for ghx_id in ghx_set:
     ghpghx_output["inputs"]["heating_thermal_load_mmbtu_per_hr"] = list(building_spaceheating_load)
     ghpghx_output["inputs"]["cooling_thermal_load_ton"] = [0] * 8760
 
-    ghx_pump_electric_con = investment_scenario["electrical_power_consumed"]
+    ghx_pump_electric_con = investment_scenario["electrical_power_consumed_"+str(ghx)]
     ghpghx_output["outputs"]["yearly_ghx_pump_electric_consumption_series_kw"] = list(ghx_pump_electric_con)
     ghpghx_output["outputs"]["peak_combined_heatpump_thermal_ton"] = 0
     ghpghx_output["outputs"]["number_of_boreholes"] = number_of_boreholes
