@@ -12,9 +12,6 @@ scenario_name = sys.argv[1]
 
 ### PATH NAMES ### 
 outputs_path = os.path.join(dir, 'results', 'scenarios', scenario_name)
-if not os.path.exists(outputs_path):
-    os.makedirs(outputs_path)
-
 results_path = os.path.join(outputs_path, 'results_json')
 result_summary_path = os.path.join(outputs_path, 'results_summary')
 

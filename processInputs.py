@@ -11,10 +11,25 @@ scenario_name = sys.argv[1]
 # scenario_name = 'with_ghp'
     
 #################### PATH NAMES ####################
+
+# Input path
 data_path = os.path.join(dir, 'data', 'scenarios', scenario_name)
 if not os.path.exists(data_path):
     os.makedirs(data_path)
 posts_path = os.path.join(data_path, 'inputs_all')
+
+# Output path
+outputs_path = os.path.join(dir, 'results', 'scenarios', scenario_name)
+if not os.path.exists(outputs_path):
+    os.makedirs(outputs_path)
+
+results_path = os.path.join(outputs_path, 'results_json')
+if not os.path.exists(results_path):
+    os.makedirs(results_path)
+
+result_summary_path = os.path.join(outputs_path, 'results_summary')
+if not os.path.exists(result_summary_path):
+    os.makedirs(result_summary_path)
 
 ################### READ INPUTS ####################
 (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,utility_tarrif,

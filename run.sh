@@ -1,4 +1,4 @@
-scenario_name="with_ghp"
+scenario_name="bau"
 
 python processInputs.py "$scenario_name"
 julia runREopt.jl "$scenario_name"
