@@ -1,0 +1,11 @@
+name: dist_ghp
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.12.5
+  - matplotlib=3.5.0
+  - numpy=2.0.1
+  - pandas=2.2.2
+  - pip=24.2
+  - ipykernel

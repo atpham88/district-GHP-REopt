@@ -108,7 +108,7 @@ for ghx_id in ghx_set:
 
     post_dist["SpaceHeatingLoad"] = {}
     post_dist["DomesticHotWaterLoad"] = {}
-    post_dist["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_spaceheating_load)
+    post_dist["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_spaceheating_load*0)
     post_dist["DomesticHotWaterLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_spaceheating_load*0)
 
     post_dist["Site"] = {}
@@ -135,7 +135,7 @@ for ghx_id in ghx_set:
     ghpghx_output["outputs"] = {}
     ghpghx_output["inputs"] = {}
 
-    ghpghx_output["inputs"]["heating_thermal_load_mmbtu_per_hr"] = list(building_spaceheating_load)
+    ghpghx_output["inputs"]["heating_thermal_load_mmbtu_per_hr"] = list(building_spaceheating_load*0)
     ghpghx_output["inputs"]["cooling_thermal_load_ton"] = [0] * 8760
 
     ghx_pump_electric_con = investment_scenario["electrical_power_consumed_"+str(ghx)]
