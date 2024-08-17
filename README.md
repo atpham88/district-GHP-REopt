@@ -2,6 +2,9 @@
 - This repo provides scripts to process inputs, run REopt model, and post process outputs to perform LCCA for pre-sized district GHP system.
 - To prepare to run the scripts in this repo, clone the repo and adjust the inputs in `data` folder and `addInputs.py`.
 
+## Set up environment
+`conda env create -f environment.yml`
+
 ## How to define input parameters
 - Main input files are defined in `addInputs.py`. This script asks users to input the full file names of GHP and GHX sizes and electric consumptions, as well as utility tarrif, and optional financial incentives.
 - All required GHP and GHX are defined in these files under `data` folder:
