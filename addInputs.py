@@ -6,13 +6,13 @@ def addInputs():
     
     # 1. District inputs
     #####################################################
-    district_file = 'GHP_scenario_district.csv'  # REQUIRED 
+    district_file = 'district.csv'  # REQUIRED 
                                     # This file include GHX size (borehole #, length) and 
                                     # Site location (lon, lat) 
 
     # 2. Building inputs
     #####################################################
-    building_file = 'GHP_scenario_building.xlsx'  # REQUIRED 
+    building_file = 'building.xlsx'  # REQUIRED 
                                     # This file include timeseries of electric consumption, 
                                     # GHP size, floor area for each building
 

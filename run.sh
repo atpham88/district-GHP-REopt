@@ -1,3 +1,5 @@
-python processInputs.py
-julia runREopt.jl
-python processOutputs.py
+scenario_name="with_ghp"
+
+python processInputs.py "$scenario_name"
+julia runREopt.jl "$scenario_name"
+python processOutputs.py "$scenario_name"

@@ -1,14 +1,22 @@
 import pandas as pd
 import numpy as np
 import os
+import sys
 import json
-from datetime import date
 
 dir = os.getcwd()
+scenario_name = sys.argv[1]
+
+# For debugging
+# scenario_name = 'with_ghp'
 
 ### PATH NAMES ### 
-results_path = os.path.join(dir, 'results', 'results_json')
-result_summary_path = os.path.join(dir, 'results','results_summary')
+outputs_path = os.path.join(dir, 'results', 'scenarios', scenario_name)
+if not os.path.exists(outputs_path):
+    os.makedirs(outputs_path)
+
+results_path = os.path.join(outputs_path, 'results_json')
+result_summary_path = os.path.join(outputs_path, 'results_summary')
 
 # Add all column headers for output CSV file here (MUST align with order or results added in SaveOutputs)
 colHeaders_types = {
@@ -117,18 +125,17 @@ for name in files:
     for col, col_type in colHeaders_types.items():
         df[col] = df[col].astype(col_type)
     
-    #df.round(3).to_csv("{}/{}_results_summary.csv".format(result_summary_path, date.today()))
-    df.round(3).to_csv(os.path.join(dir, "results", "results_summary", "results_summary.csv"),index=False)
+    df.round(3).to_csv(os.path.join(result_summary_path, "scenario_"+scenario_name+"_summary.csv"),index=False)
 
 ## Total district-level outputs
-df = pd.read_csv(os.path.join(dir, "results", "results_summary", "results_summary.csv"),index_col=0)
+df = pd.read_csv(os.path.join(result_summary_path, "scenario_"+scenario_name+"_summary.csv"),index_col=0)
 df_tot = df.sum(axis="index", skipna=True)
 df_tot = df_tot.to_frame().T
 df_tot.index.name = "ID"
 df_tot = df_tot.rename(index={df_tot.index[0]:"District_Total"})
 
 df_all = pd.concat([df, df_tot])
-df_all.round(3).to_csv(os.path.join(dir, "results", "results_summary", "results_summary.csv"))
+df_all.round(3).to_csv(os.path.join(result_summary_path, "scenario_"+scenario_name+"_summary.csv"))
 
 ## Save result to json file
 json_output = {}
@@ -142,7 +149,7 @@ for output in output_set:
         df_output = df_all.loc[df_all.index==output,df_all.columns==attribute].iloc[0,0]
         json_output[output][attribute] = df_output
 
-with open(os.path.join(dir, "results", "results_summary", 'district_GHP_output.json'), 'w') as handle:
+with open(os.path.join(result_summary_path, 'output_for_scenario_'+scenario_name+'.json'), 'w') as handle:
         json.dump(json_output, handle)  
 
 

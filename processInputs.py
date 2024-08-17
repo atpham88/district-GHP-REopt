@@ -1,13 +1,20 @@
 import pandas as pd
 import os
+import sys
 import json
 from addInputs import addInputs
 
 dir = os.getcwd()
+scenario_name = sys.argv[1]
 
+# For debugging
+# scenario_name = 'with_ghp'
+    
 #################### PATH NAMES ####################
-posts_path = os.path.join(dir, 'data', 'inputs_all')
-data_path = os.path.join(dir, 'data')
+data_path = os.path.join(dir, 'data', 'scenarios', scenario_name)
+if not os.path.exists(data_path):
+    os.makedirs(data_path)
+posts_path = os.path.join(data_path, 'inputs_all')
 
 ################### READ INPUTS ####################
 (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,utility_tarrif,
@@ -101,9 +108,6 @@ for building_id in building_set:
 for ghx_id in ghx_set:
     ghx = ghx_id.split("_", 1)[1]
 
-    #building_spaceheating_load = investment_scenario['electric_load_tot_'+str(building)]
-    #building_spaceheating_load = building_spaceheating_load*0.000003412/1000
-
     building_spaceheating_load = [0]*8760
     building_elec_load = [0]*8760
 
@@ -119,7 +123,7 @@ for ghx_id in ghx_set:
     post_dist["Site"]["longitude"] = lon
 
     post_dist["ElectricLoad"] = {}
-    post_dist["ElectricLoad"]["loads_kw"] = list(building_elec_load)
+    post_dist["ElectricLoad"]["loads_kw"] = building_elec_load
 
     tarrif_file = "utility_rates.json"
     with open(os.path.join(data_path, tarrif_file), 'rb') as handle:

@@ -1,6 +1,0 @@
-ID,lcc,lifecycle_capital_costs,lifecycle_om_costs_after_tax,lifecycle_emissions_cost_health,lifecycle_capital_costs_plus_om_after_tax,lifecycle_elecbill_after_tax,lifecycle_emissions_cost_climate,REopt Solver [seconds],Initial Capital Costs After Incentives,Annual Load [kWh],Year One Bill,lifecycle_emissions_tonnes_CO2,Annual Emissions [tonnes CO2]
-GHX_shkwfn,76782.907,81472.3,0.0,26.02,81472.3,7709.482,39.77,1.37,81472.3,272.486,710.4,1.01,0.04
-GHP_building_mksuwer,16957.301,8320.525,0.0,52.04,8320.525,8636.776,79.54,2.697,8320.525,272.486,795.79,2.01,0.08
-GHP_building_sdupkgra,224610.586,47962.501,0.0,4693.24,47962.501,176648.085,7163.42,1.363,47962.501,24561.555,16268.09,181.45,7.258
-GHX_ahudfd,76782.907,81472.3,0.0,26.02,81472.3,7709.482,39.77,1.47,81472.3,272.486,710.4,1.01,0.04
-District_Total,395133.701,219227.626,0.0,4797.32,219227.626,200703.825,7322.5,6.9,219227.626,25379.013,18484.68,185.48,7.418
