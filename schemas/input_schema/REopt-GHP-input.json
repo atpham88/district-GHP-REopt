@@ -139,6 +139,41 @@
                     }
                 }
             }
+        },
+        "installed_cost_heatpump_per_ton": {
+            "type": "float",
+            "required": false,
+            "description": "installation cost per unit (ton) of GHP"
+        },
+        "installed_cost_ghx_per_ft": {
+            "type": "float",
+            "required": false,
+            "description": "installation cost per unit (ft) of GHX"
+        },
+        "installed_cost_building_hydronic_loop_per_sqft": {
+            "type": "float",
+            "required": false,
+            "description": "installation cost per sqft of building hydronic loop"
+        },
+        "om_cost_per_sqft_year": {
+            "type": "float",
+            "required": false,
+            "description": "if not specified, the value is -$0.51, capturing saving from HVAC operation. Recommended setting at 0"
+        },
+        "macrs_bonus_fraction": {
+            "type": "float",
+            "required": false,
+            "description": "Percentage of macrs benefits for GHP. Value between 0 and 1"
+        },
+        "macrs_itc_reduction": {
+            "type": "float",
+            "required": false,
+            "description": "Percentage of macrs benefits for GHP. Value between 0 and 1"
+        },
+        "federal_itc_fraction": {
+            "type": "float",
+            "required": false,
+            "description": "Percentage of ITC benefits for GHP. Value between 0 and 1"
         }
     },
     "ExistingBoiler": {
