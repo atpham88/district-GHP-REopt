@@ -1,7 +1,8 @@
 import json
 import os
 import site
-import src
+#import src
+from src.post_and_poll import get_api_results
 
 API_KEY = 'cCeLsoUMlcwU8XhWLLhrxMV1SnSc9t2aBkdjbUjS'  # REPLACE WITH YOUR API KEY
 
@@ -26,7 +27,7 @@ for item in os.listdir(inputs_path):
     root_url = "http://0.0.0.0:8000/stable" # /stable == /v3 
     
     site.addsitedir("/home/jovyan/work/REopt API Scripts")
-    from src.post_and_poll import get_api_results
+    #from src.post_and_poll import get_api_results
     api_response = get_api_results(post=post, 
                                    API_KEY=API_KEY, 
                                    api_url=root_url, 
