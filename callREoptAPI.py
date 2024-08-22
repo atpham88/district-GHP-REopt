@@ -1,16 +1,18 @@
 import json
 import os
+import sys
 import site
 #import src
 from src.post_and_poll import get_api_results
 
 API_KEY = 'cCeLsoUMlcwU8XhWLLhrxMV1SnSc9t2aBkdjbUjS'  # REPLACE WITH YOUR API KEY
 
+run_path = sys.argv[1]
 
 ##############################################################################################################
 dir = os.getcwd()
-inputs_path = os.path.join("data", 'inputs_all')
-outputs_path = os.path.join("results", 'results_json')
+inputs_path = os.path.join(run_path, 'inputs_all')
+outputs_path = os.path.join(run_path, "results", 'results_json')
 ##############################################################################################################
 
 for item in os.listdir(inputs_path):

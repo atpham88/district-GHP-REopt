@@ -5,15 +5,16 @@ import sys
 import json
 
 dir = os.getcwd()
-scenario_name = sys.argv[1]
+run_path = sys.argv[1]
+scenario_name = sys.argv[2]
 
 # For debugging
 # scenario_name = 'with_ghp'
 
 ### PATH NAMES ### 
-outputs_path = os.path.join(dir, 'results', 'scenarios', scenario_name)
-results_path = os.path.join(outputs_path, 'results_json')
-result_summary_path = os.path.join(outputs_path, 'results_summary')
+outputs_path = run_path
+results_path = os.path.join(outputs_path, 'results', 'results_json')
+result_summary_path = os.path.join(outputs_path, 'results', 'results_summary')
 
 # Add all column headers for output CSV file here (MUST align with order or results added in SaveOutputs)
 colHeaders_types = {

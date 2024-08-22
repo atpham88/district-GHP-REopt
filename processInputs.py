@@ -5,7 +5,7 @@ import json
 from addInputs import addInputs
 
 dir = os.getcwd()
-scenario_name = sys.argv[1]
+run_path = sys.argv[1]
 
 # For debugging
 # scenario_name = 'with_ghp'
@@ -13,21 +13,21 @@ scenario_name = sys.argv[1]
 #################### PATH NAMES ####################
 
 # Input path
-data_path = os.path.join(dir, 'data', 'scenarios', scenario_name)
+data_path = run_path
 if not os.path.exists(data_path):
     os.makedirs(data_path)
 posts_path = os.path.join(data_path, 'inputs_all')
 
 # Output path
-outputs_path = os.path.join(dir, 'results', 'scenarios', scenario_name)
+outputs_path = run_path
 if not os.path.exists(outputs_path):
     os.makedirs(outputs_path)
 
-results_path = os.path.join(outputs_path, 'results_json')
+results_path = os.path.join(outputs_path, 'results', 'results_json')
 if not os.path.exists(results_path):
     os.makedirs(results_path)
 
-result_summary_path = os.path.join(outputs_path, 'results_summary')
+result_summary_path = os.path.join(outputs_path, 'results', 'results_summary')
 if not os.path.exists(result_summary_path):
     os.makedirs(result_summary_path)
 
@@ -76,9 +76,13 @@ for building_id in building_set:
 
     # Read individual building's utility tariff
     post["ElectricTariff"] = {}
-    with open(os.path.join(data_path, utility_tarrif), 'rb') as handle:
-        r = json.load(handle)
-    post["ElectricTariff"]["urdb_response"] = r
+    if os.path.exists(os.path.join(data_path,"utility_rates.csv")):
+        r = pd.read_csv(os.path.join(data_path, "utility_rates.csv"), header=None)[0][0]
+        post["ElectricTariff"]["urdb_label"] = r
+    else:
+        with open(os.path.join(data_path, utility_tarrif), 'rb') as handle:
+            r = json.load(handle)
+        post["ElectricTariff"]["urdb_response"] = r
 
     # Read GHP and GHX outputs:
     ghp_size = building_ghp_data.loc[building_ghp_data.index=="GHP_size_ton",building_ghp_data.columns==building_id].iloc[0,0]

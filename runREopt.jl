@@ -5,10 +5,10 @@ using REopt
 using JSON
 
 dir = @__DIR__
-scenario_name = ARGS[1]
+run_path = ARGS[1]
 
-results_path = joinpath(dir, "results", "scenarios", scenario_name, "results_json")          # where to save results
-posts_path = joinpath(dir, "data", "scenarios", scenario_name, "inputs_all")
+results_path = joinpath(run_path, "results", "results_json")          # where to save results
+posts_path = joinpath(run_path, "inputs_all")
 
 for file in readdir(posts_path) 
         print("\n",file)
