@@ -117,8 +117,7 @@ for building_id in building_set:
     ghpghx_output["inputs"]["heating_thermal_load_mmbtu_per_hr"] = list(building_spaceheating_load)
     ghpghx_output["inputs"]["cooling_thermal_load_ton"] = [0] * 8760
 
-    ghpghx_output_all = [ghpghx_output, ghpghx_output]
-    post["GHP"]["ghpghx_responses"] = ghpghx_output_all
+    post["GHP"]["ghpghx_responses"] = [ghpghx_output]
 
     with open(os.path.join(posts_path, 'GHP_building_' + str(building) +'.json'), 'w') as handle:
         json.dump(post, handle)  
