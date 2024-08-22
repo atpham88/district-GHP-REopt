@@ -51,92 +51,46 @@
             "description": "always set to 1"
         },
         "ghpghx_responses":{
-            "0": {
-                "outputs": {
-                    "heat_pump_configuration": {
-                        "type": "string",
-                        "required": true,
-                        "description": "set as WSHP"
-                    },
-                    "peak_combined_heatpump_thermal_ton": {
-                        "type": "float",
-                        "required": true,
-                        "description": "size of GHP in ton"
-                    },
-                    "number_of_boreholes": {
-                        "type": "int",
-                        "required": true
-                    },
-                    "length_boreholes_ft": {
-                        "type": "float",
-                        "required": true
-                    },
-                    "yearly_total_electric_consumption_series_kw": {
-                        "type": "array",
-                        "required": true,
-                        "description": "8760 timeseries of building total electric consumption"
-                    },
-                    "yearly_ghx_pump_electric_consumption_series_kw": {
-                        "type": "array",
-                        "required": true,
-                        "description": "8760 timeseries of ghx's total electric consumption"
-                    }
+            "outputs": {
+                "heat_pump_configuration": {
+                    "type": "string",
+                    "required": true,
+                    "description": "set as WSHP"
                 },
-                "inputs": {
-                    "heating_thermal_load_mmbtu_per_hr": {
-                        "type": "array",
-                        "required": true,
-                        "description": "not used for URBANopt's GHP LCCA but required for formatting"
-                    },
-                    "cooling_thermal_load_ton": {
-                        "type": "array",
-                        "required": true,
-                        "description": "not used for URBANopt's GHP LCCA but required for formatting, can set as zeros"
-                    }
+                "peak_combined_heatpump_thermal_ton": {
+                    "type": "float",
+                    "required": true,
+                    "description": "size of GHP in ton"
+                },
+                "number_of_boreholes": {
+                    "type": "int",
+                    "required": true
+                },
+                "length_boreholes_ft": {
+                    "type": "float",
+                    "required": true
+                },
+                "yearly_total_electric_consumption_series_kw": {
+                    "type": "array",
+                    "required": true,
+                    "description": "8760 timeseries of building total electric consumption"
+                },
+                "yearly_ghx_pump_electric_consumption_series_kw": {
+                    "type": "array",
+                    "required": true,
+                    "description": "8760 timeseries of ghx's total electric consumption"
                 }
             },
-            "1": {
-                "outputs": {
-                    "heat_pump_configuration": {
-                        "type": "string",
-                        "required": true,
-                        "description": "set as WSHP"
-                    },
-                    "peak_combined_heatpump_thermal_ton": {
-                        "type": "float",
-                        "required": true,
-                        "description": "size of GHP in ton"
-                    },
-                    "number_of_boreholes": {
-                        "type": "int",
-                        "required": true
-                    },
-                    "length_boreholes_ft": {
-                        "type": "float",
-                        "required": true
-                    },
-                    "yearly_total_electric_consumption_series_kw": {
-                        "type": "array",
-                        "required": true,
-                        "description": "8760 timeseries of building total electric consumption"
-                    },
-                    "yearly_ghx_pump_electric_consumption_series_kw": {
-                        "type": "array",
-                        "required": true,
-                        "description": "8760 timeseries of ghx's total electric consumption"
-                    }
+            "inputs": {
+                "heating_thermal_load_mmbtu_per_hr": {
+                    "type": "array",
+                    "required": true,
+                    "description": "not used for URBANopt's GHP LCCA but required for formatting"
                 },
-                "inputs": {
-                    "heating_thermal_load_mmbtu_per_hr": {
-                        "type": "array",
-                        "required": true,
-                        "description": "not used for URBANopt's GHP LCCA but required for formatting"
-                    },
-                    "cooling_thermal_load_ton": {
-                        "type": "array",
-                        "required": true,
-                        "description": "not used for URBANopt's GHP LCCA but required for formatting, can set as zeros"
-                    }
+                "cooling_thermal_load_ton": {
+                    "type": "array",
+                    "required": true,
+                    "description": "not used for URBANopt's GHP LCCA but required for formatting, can set as zeros"
                 }
             }
         },
