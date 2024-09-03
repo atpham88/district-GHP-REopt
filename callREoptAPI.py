@@ -11,8 +11,8 @@ run_path = sys.argv[1]
 
 ##############################################################################################################
 dir = os.getcwd()
-inputs_path = os.path.join(run_path, 'inputs_all')
-outputs_path = os.path.join(run_path, "results", 'results_json')
+inputs_path = os.path.join(run_path, "inputs_all")
+outputs_path = os.path.join(run_path, "results", "results_json")
 ##############################################################################################################
 
 for item in os.listdir(inputs_path):
@@ -26,7 +26,9 @@ for item in os.listdir(inputs_path):
         post = json.load(fp)
     
     results_file_name = post_name
-    root_url = "http://0.0.0.0:8000/stable" # /stable == /v3 
+    #root_url = "http://0.0.0.0:8000/stable" # /stable == /v3 
+    #root_url = "http://localhost:8000/stable" # /stable == /v3 
+    root_url = "https://developer.nrel.gov/api/reopt/stable" # /stable == /v3
     
     site.addsitedir("/home/jovyan/work/REopt API Scripts")
     #from src.post_and_poll import get_api_results
