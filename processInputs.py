@@ -8,15 +8,15 @@ dir = os.getcwd()
 run_path = sys.argv[1]
 
 # For debugging
-# scenario_name = 'with_ghp'
+#scenario_name = 'case_study'
+#run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY24/Geothermal/Workshop/case_study"
     
 #################### PATH NAMES ####################
-
 # Input path
 data_path = run_path
-if not os.path.exists(data_path):
-    os.makedirs(data_path)
 posts_path = os.path.join(data_path, 'inputs_all')
+if not os.path.exists(posts_path):
+    os.makedirs(posts_path)
 
 # Output path
 outputs_path = run_path
@@ -72,7 +72,9 @@ for building_id in building_set:
     post["DomesticHotWaterLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_spaceheating_load*0)
 
     post["ElectricLoad"] = {}
+    #post["ElectricLoad"]["time_steps_per_hour"] = 4
     post["ElectricLoad"]["loads_kw"] = list(building_elec_load)
+    print(len(building_elec_load))
 
     # Read individual building's utility tariff
     post["ElectricTariff"] = {}
@@ -144,10 +146,14 @@ for ghx_id in ghx_set:
     post_dist["ElectricLoad"]["loads_kw"] = building_elec_load
 
     tarrif_file = "utility_rates.json"
-    with open(os.path.join(data_path, tarrif_file), 'rb') as handle:
-        r = json.load(handle)
     post_dist["ElectricTariff"] = {}    
-    post_dist["ElectricTariff"]["urdb_response"] = r
+    if os.path.exists(os.path.join(data_path,"utility_rates.csv")):
+        r = pd.read_csv(os.path.join(data_path, "utility_rates.csv"), header=None)[0][0]
+        post["ElectricTariff"]["urdb_label"] = r
+    else:
+        with open(os.path.join(data_path, utility_tarrif), 'rb') as handle:
+            r = json.load(handle)
+        post["ElectricTariff"]["urdb_response"] = r
 
     post_dist["ExistingBoiler"] = {}
     post_dist["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu
@@ -176,7 +182,7 @@ for ghx_id in ghx_set:
 
     post_dist["GHP"] = {}  
     post_dist["GHP"]["require_ghp_purchase"] = 1
-    post_dist["GHP"]["building_sqft"] = 0
+    post_dist["GHP"]["building_sqft"] = 0.0000001
     post_dist["GHP"]["om_cost_per_sqft_year"] = 0
     post_dist["GHP"]["heatpump_capacity_sizing_factor_on_peak_load"] = 1.0
 
