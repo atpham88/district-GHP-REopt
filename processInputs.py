@@ -5,11 +5,11 @@ import json
 from addInputs import addInputs
 
 dir = os.getcwd()
-run_path = sys.argv[1]
+#run_path = sys.argv[1]
 
 # For debugging
-#scenario_name = 'case_study'
-#run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY24/Geothermal/Workshop/case_study"
+scenario_name = 'case_study'
+run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY24/Geothermal/Workshop/case_study"
     
 #################### PATH NAMES ####################
 # Input path
@@ -74,7 +74,6 @@ for building_id in building_set:
     post["ElectricLoad"] = {}
     #post["ElectricLoad"]["time_steps_per_hour"] = 4
     post["ElectricLoad"]["loads_kw"] = list(building_elec_load)
-    print(len(building_elec_load))
 
     # Read individual building's utility tariff
     post["ElectricTariff"] = {}
@@ -145,15 +144,14 @@ for ghx_id in ghx_set:
     post_dist["ElectricLoad"] = {}
     post_dist["ElectricLoad"]["loads_kw"] = building_elec_load
 
-    tarrif_file = "utility_rates.json"
     post_dist["ElectricTariff"] = {}    
     if os.path.exists(os.path.join(data_path,"utility_rates.csv")):
         r = pd.read_csv(os.path.join(data_path, "utility_rates.csv"), header=None)[0][0]
-        post["ElectricTariff"]["urdb_label"] = r
+        post_dist["ElectricTariff"]["urdb_label"] = r
     else:
         with open(os.path.join(data_path, utility_tarrif), 'rb') as handle:
             r = json.load(handle)
-        post["ElectricTariff"]["urdb_response"] = r
+        post_dist["ElectricTariff"]["urdb_response"] = r
 
     post_dist["ExistingBoiler"] = {}
     post_dist["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu
