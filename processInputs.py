@@ -5,11 +5,11 @@ import json
 from addInputs import addInputs
 
 dir = os.getcwd()
-#run_path = sys.argv[1]
+run_path = sys.argv[1]
 
 # For debugging
-scenario_name = 'case_study'
-run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY24/Geothermal/Workshop/case_study"
+#scenario_name = 'case_study'
+#run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY24/Geothermal/Workshop/case_study"
     
 #################### PATH NAMES ####################
 # Input path
@@ -127,19 +127,19 @@ for building_id in building_set:
 for ghx_id in ghx_set:
     ghx = ghx_id.split("_", 1)[1]
 
-    building_spaceheating_load = [0]*8760
-    building_elec_load = [0]*8760
+    building_spaceheating_load = [0.00000001]*8760
+    building_elec_load = [0.00000001]*8760
 
     post_dist ={}
+
+    post_dist["Site"] = {}
+    post_dist["Site"]["latitude"] = lat
+    post_dist["Site"]["longitude"] = lon
 
     post_dist["SpaceHeatingLoad"] = {}
     post_dist["DomesticHotWaterLoad"] = {}
     post_dist["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = building_spaceheating_load
     post_dist["DomesticHotWaterLoad"]["fuel_loads_mmbtu_per_hour"] = building_spaceheating_load
-
-    post_dist["Site"] = {}
-    post_dist["Site"]["latitude"] = lat
-    post_dist["Site"]["longitude"] = lon
 
     post_dist["ElectricLoad"] = {}
     post_dist["ElectricLoad"]["loads_kw"] = building_elec_load
@@ -152,9 +152,6 @@ for ghx_id in ghx_set:
         with open(os.path.join(data_path, utility_tarrif), 'rb') as handle:
             r = json.load(handle)
         post_dist["ElectricTariff"]["urdb_response"] = r
-
-    post_dist["ExistingBoiler"] = {}
-    post_dist["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu
 
     # Read GHX sizes:
     number_of_boreholes = district_ghx_data.loc[district_ghx_data.index=="number_of_boreholes",district_ghx_data.columns==ghx_id].iloc[0,0]
@@ -169,7 +166,7 @@ for ghx_id in ghx_set:
 
     ghx_pump_electric_con = investment_scenario["electrical_power_consumed_"+str(ghx)]
     ghpghx_output["outputs"]["yearly_ghx_pump_electric_consumption_series_kw"] = list(ghx_pump_electric_con)
-    ghpghx_output["outputs"]["peak_combined_heatpump_thermal_ton"] = 0
+    ghpghx_output["outputs"]["peak_combined_heatpump_thermal_ton"] = 0.00000000000001
     ghpghx_output["outputs"]["number_of_boreholes"] = number_of_boreholes
     ghpghx_output["outputs"]["length_boreholes_ft"] = length_of_boreholes
     ghpghx_output["outputs"]["heat_pump_configuration"] = "WSHP"
@@ -180,9 +177,12 @@ for ghx_id in ghx_set:
 
     post_dist["GHP"] = {}  
     post_dist["GHP"]["require_ghp_purchase"] = 1
-    post_dist["GHP"]["building_sqft"] = 0.0000001
+    post_dist["GHP"]["building_sqft"] = 0.0000000001
     post_dist["GHP"]["om_cost_per_sqft_year"] = 0
     post_dist["GHP"]["heatpump_capacity_sizing_factor_on_peak_load"] = 1.0
+
+    post_dist["ExistingBoiler"] = {}
+    post_dist["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu
 
     # Dispatch output:
     ghpghx_output["outputs"]["yearly_heating_heatpump_electric_consumption_series_kw"] = building_elec_load
