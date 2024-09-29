@@ -11,7 +11,7 @@ dir = @__DIR__
 results_path = joinpath(dir, "results", "results_json")
 posts_path = joinpath(dir, "data")
 file = "ghp_test.json"
-tarrif_file = "cordova_rates.json"
+tarrif_file = "utility_rates.json"
 ghpghx_file = "GHP_input.json"
 ghpghx_input_v = JSON.parsefile("$posts_path/$ghpghx_file")
 
