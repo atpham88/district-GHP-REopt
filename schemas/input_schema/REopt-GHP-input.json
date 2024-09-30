@@ -10,7 +10,7 @@
         }
     },
     "SpaceHeatingLoad": {
-        "fuel_load_mmbtu_per_hour": {
+        "fuel_loads_mmbtu_per_hour": {
             "type": "array",
             "required": true,
             "description": "8760 timeseries",
@@ -18,7 +18,7 @@
         }
     },
     "DomesticHotWaterLoad": {
-        "fuel_load_mmbtu_per_hour": {
+        "fuel_loads_mmbtu_per_hour": {
             "type": "array",
             "required": true,
             "description": "8760 timeseries, if GHP not providing DHW set to zeros"
