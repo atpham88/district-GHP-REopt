@@ -42,6 +42,11 @@
             "required": true,
             "description": "BAU assumes the system's thermal load is supplied by an existing boiler, and its fuel cost needs to be specified"
         }
+    },
+    "ExistingChiller": {
+        "type": "float",
+        "required": true,
+        "description": "BAU assumes the system's cooling load is supplied by an existing chiller, no need to define anything additional here"        
     }
 }
     
