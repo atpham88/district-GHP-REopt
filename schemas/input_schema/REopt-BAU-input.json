@@ -1,0 +1,47 @@
+{
+    "Site": {
+        "latitude": {
+            "type": "float",
+            "required": true
+        },
+        "longitude": {
+            "type": "float",
+            "required": true
+        }
+    },
+    "SpaceHeatingLoad": {
+        "fuel_loads_mmbtu_per_hour": {
+            "type": "array",
+            "required": true,
+            "description": "8760 timeseries",
+            "note": "This parameter is required to run REopt's BAU for GHP module. Users need to get the accurate hourly fuel consumption to calculate BAU bills"
+        }
+    },
+    "DomesticHotWaterLoad": {
+        "fuel_loads_mmbtu_per_hour": {
+            "type": "array",
+            "required": true,
+            "description": "8760 timeseries, if your system has no DHW load, set to zeros"
+        }
+    },
+    "ElectricLoad": {
+        "load_kw": {
+            "type": "array",
+            "required": true,
+            "description": "8760 timeseries",
+            "note": "Electric load for BAU is different than for GHP because it does not include GHP electric consumption. 15 min interval data do not work. Please make sure all timeseries are 8760"
+        }
+    },
+    "ElectricTarriff": {
+        "urdb_label": "string",
+        "required": true
+    },
+    "ExistingBoiler": {
+        "fuel_cost_per_mmbtu": {
+            "type": "float",
+            "required": true,
+            "description": "BAU assumes the system's thermal load is supplied by an existing boiler, and its fuel cost needs to be specified"
+        }
+    }
+}
+    
