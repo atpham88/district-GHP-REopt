@@ -14,14 +14,23 @@
             "type": "array",
             "required": true,
             "description": "8760 timeseries",
-            "note": "This parameter is required to run REopt's BAU for GHP module. Users need to get the accurate hourly fuel consumption to calculate BAU bills"
+            "note": "This parameter is required for formatting to run REopt's BAU for GHP module. Users need to get the accurate hourly fuel consumption to calculate BAU bills. If BAU system does not use fuel for heating (if BAU system uses electric heater for heating for example), please set this series at close to zeros (for ex: 0.0000001) and the electric heating load can be added to ElectricLoad"
         }
     },
     "DomesticHotWaterLoad": {
         "fuel_loads_mmbtu_per_hour": {
             "type": "array",
+            "required": false,
+            "description": "8760 timeseries",
+            "note": "Only required if BAU system has DHW load and uses fuel for this load. If BAU system has no DHW load, or does not use fuel for DHW heating, set to values close to zeros. If BAU system uses electricity for DHW, please add this electric DHW load to ElectricLoad"
+        }
+    },
+    "CoolingLoad": {
+        "thermal_loads_ton": {
+            "type": "array",
             "required": true,
-            "description": "8760 timeseries, if your system has no DHW load, set to zeros"
+            "description": "8760 timeseries",
+            "note": "Only required if BAU system uses fuel for cooling. If BAU system uses electricity for cooling (AC), please add this load to ElectricLoad defined below. If BAU system has no cooling load, set to values close to zeros."
         }
     },
     "ElectricLoad": {
@@ -29,7 +38,7 @@
             "type": "array",
             "required": true,
             "description": "8760 timeseries",
-            "note": "Electric load for BAU is different than for GHP because it does not include GHP electric consumption. 15 min interval data do not work. Please make sure all timeseries are 8760"
+            "note": "Electric load for BAU is different than for GHP scenario because it does not include GHP electric consumption. If the BAU uses electricity for cooling instead of fuel, please add the cooling electric load here. 15 min interval data do not work. Please make sure all timeseries are 8760"
         }
     },
     "ElectricTarriff": {
@@ -39,14 +48,14 @@
     "ExistingBoiler": {
         "fuel_cost_per_mmbtu": {
             "type": "float",
-            "required": true,
-            "description": "BAU assumes the system's thermal load is supplied by an existing boiler, and its fuel cost needs to be specified"
+            "required": false,
+            "description": "Only required if BAU system use fuel for heating. In this case, fuel cost needs to be specified"
         }
     },
     "ExistingChiller": {
         "type": "float",
-        "required": true,
-        "description": "BAU assumes the system's cooling load is supplied by an existing chiller, no need to define anything additional here"        
+        "required": false,
+        "description": "Only required if BAU system uses fuel for cooling. No need to define anything additional here"        
     }
 }
     
