@@ -18,22 +18,22 @@
     "SpaceHeatingLoad": {
         "fuel_loads_mmbtu_per_hour": {
             "type": "array",
-            "required": true,
+            "required": false,
             "description": "This is the fuel energy consumption for space heating at the individual building level. This is used in the business as usual (BAU) LCCA analysis in the GHP module to calculate BAU bills. These are 8760 hourly timeseries values.",
-            "note": "This parameter is required to run REopt's BAU for GHP module. If there is no fuel based heating in BAU, add values close to 0."
+            "note": "This parameter is required to run REopt's BAU for GHP module. If there is no fuel based heating in BAU, this can be skipped."
         }
     },
     "DomesticHotWaterLoad": {
         "fuel_loads_mmbtu_per_hour": {
             "type": "array",
             "required": false,
-            "description": "This is the fuel enegry consumption for providing domestic hot water at the individual building level. This is used in the business as usual (BAU) LCCA analysis in the GHP module. These are 8760 hourly timeseries values.",
+            "description": "This is the fuel energy consumption for providing domestic hot water at the individual building level. This is used in the business as usual (BAU) LCCA analysis in the GHP module. These are 8760 hourly timeseries values.",
             "note": "Only required if BAU system has DHW load and uses fuel for this load. If BAU system has no DHW load, or does not use fuel for DHW heating, set to values close to zeros. If BAU system uses electricity for DHW, please add this electric DHW load to ElectricLoad"
 
         }
     },
     "CoolingLoad":{
-        "fuel_loads_mmbtu_per_hour": {
+        "thermal_loads_ton": {
             "type": "array",
             "required": true,
             "description": "This is the fuel energy consumption for space cooling at the individual building level. This is used in the business as usual (BAU) LCCA analysis in the GHP module to calculate BAU bills. These are 8760 hourly timeseries values.",
@@ -64,7 +64,7 @@
         "fuel_cost_per_mmbtu": {
             "type": "float",
             "required": false,
-            "description":  "Only required if BAU system uses fuel for cooling.  In this case, fuel cost needs to be specified"
+            "description": "Only required if BAU system uses fuel for cooling.  In this case, fuel cost needs to be specified"
         }        
     }
 }
