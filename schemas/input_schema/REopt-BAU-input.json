@@ -34,7 +34,7 @@
         }
     },
     "ElectricLoad": {
-        "load_kw": {
+        "loads_kw": {
             "type": "array",
             "required": true,
             "description": "8760 timeseries",
