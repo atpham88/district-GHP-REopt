@@ -56,6 +56,19 @@
         "type": "float",
         "required": false,
         "description": "Only required if BAU system uses fuel for cooling. No need to define anything additional here"        
+    },
+    "ElectricHeater": {
+        "installed_cost_per_mmbtu_per_hour": {
+            "type": "float",
+            "required": false,
+            "description": "Only required if BAU system uses electricity for heating"
+        },
+        "can_serve_dhw": {
+            "type": "Bool",
+            "required": false,
+            "description": "Only required if BAU system uses electricity for heating water"
+        }
     }
+
 }
     
