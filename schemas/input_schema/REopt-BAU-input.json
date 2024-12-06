@@ -68,7 +68,6 @@
             "required": false,
             "description": "Only required if BAU system uses electricity for heating water"
         }
-    }
-
+    }  
 }
     
