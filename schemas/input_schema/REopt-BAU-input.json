@@ -59,12 +59,5 @@
             "required": false,
             "description": "Only required if BAU system use fuel for heating. In this case, fuel cost needs to be specified"
         }
-    },
-    "ExistingChiller": {
-        "fuel_cost_per_mmbtu": {
-            "type": "float",
-            "required": false,
-            "description": "Only required if BAU system uses fuel for cooling.  In this case, fuel cost needs to be specified"
-        }        
     }
 }
