@@ -136,12 +136,6 @@
             "type": "float",
             "required": false,
             "description": "Percentage of ITC benefits for GHP. Value between 0 and 1"
-        },
-        "avoided_capex_by_ghp_present_value": {
-            "type": "float",
-            "required": false,
-            "description": "Account for expenses avoided by addition of GHP",
-            "note": "Required if want to capture the avoided capital cost of the BAU system when switching to GHP. Use this to accurately calculate NPV"
         }
     },
     "ExistingBoiler": {
