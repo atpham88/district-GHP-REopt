@@ -144,6 +144,7 @@ for ghx_id in ghx_set:
 
     post_dist["ElectricLoad"] = {}
     post_dist["ElectricLoad"]["loads_kw"] = building_elec_load
+    post_dist["ElectricLoad"]["year"] = 2025
 
     post_dist["ElectricTariff"] = {}    
     if os.path.exists(os.path.join(data_path,"utility_rates.csv")):
