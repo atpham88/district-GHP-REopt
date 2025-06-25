@@ -74,6 +74,7 @@ for building_id in building_set:
     post["ElectricLoad"] = {}
     #post["ElectricLoad"]["time_steps_per_hour"] = 4
     post["ElectricLoad"]["loads_kw"] = list(building_elec_load)
+    post["ElectricLoad"]["year"] = 2025
 
     # Read individual building's utility tariff
     post["ElectricTariff"] = {}
