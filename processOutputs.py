@@ -9,7 +9,8 @@ run_path = sys.argv[1]
 scenario_name = sys.argv[2]
 
 # For debugging
-# scenario_name = 'with_ghp'
+#scenario_name = 'no_fractions'
+#run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY25/URBANopt_REopt/5_building_site"
 
 ### PATH NAMES ### 
 outputs_path = run_path
@@ -23,34 +24,25 @@ colHeaders_types = {
     #"LCC BAU [$]": float,
     "lcc": float,
     #"NPV [$]": float,
-    #"Analysis Period Elec Cost Savings [%]": float,
-    "lifecycle_capital_costs": float,
+    "lifecycle capital cost": float,
+    "initial capital cost": float,
+    "initial capital cost after incentives": float,
+    "ghx residual value": float,
 
-    ## LCC Breakdown
-    "lifecycle_om_costs_after_tax": float,
-    "lifecycle_capital_costs_plus_om_after_tax": float,
-    "lifecycle_elecbill_after_tax": float,
-    "lifecycle_emissions_cost_climate": float,
-    "REopt Solver [seconds]": float,
-
-    #"Simple Payback [years]": float,
-    "Initial Capital Costs After Incentives": float,
+    "lifecycle O&M cost after tax": float,
     
-    "Annual Load [kWh]": float,
- 
-    #"Year One Bill_BAU [$]": float,
-    "Year One Bill": float,
-    #"Year One Bill Savings [$]": float,
+    "annual load [kWh]": float,
+    "year one bill": float,
+    "lifecycle elecbill after tax": float,
 
     #"Analysis Period Emissions_BAU [tonnes CO2]": float,
-    "lifecycle_emissions_tonnes_CO2": float,
+    "lifecycle emissions [tonnes CO2]": float,
     #"Analysis Period Emissions Savings [tonnes CO2]": float,
     #"Analysis Period Emissions Savings [%]": float,
     #"Analysis Period Emissions Savings [%] - Check": float,
     #"Annual Emissions_BAU [tonnes CO2]": float,
-    "Annual Emissions [tonnes CO2]": float,
+    "annual emissions [tonnes CO2]": float,
     #"Annual Emissions Savings [tonnes CO2]": float,
-    "lifecycle_emissions_cost_health": float
     
 }
 colHeaders = [i for i in colHeaders_types.keys()]
@@ -67,6 +59,7 @@ def SaveOutputs(res, name, colHeaders):
     tariff = r["ElectricTariff"]
     site = r["Site"]
     fin = r["Financial"]
+    ghp = r["GHP"]
 
     #capital costs
     res = np.append(res, building) # Building Name
@@ -75,19 +68,16 @@ def SaveOutputs(res, name, colHeaders):
     #res = np.append(res, r["Financial"]["npv"])    # NPV,
     #res = np.append(res, ((r["Financial"]["npv"])/(r["Financial"]["lcc_bau"]))*100) # "Analysis Period Elec Cost Savings [%]"
     res = np.append(res, fin["lifecycle_capital_costs"]) #  "lifecycle_generation_tech_capital_costs",
+    res = np.append(res, fin["initial_capital_costs"]) #capital costs
+    res = np.append(res, fin["initial_capital_costs_after_incentives"]) #capital costs
+    res = np.append(res, ghp["ghx_residual_value_present_value"]) #ghx residual value
     res = np.append(res, fin["lifecycle_om_costs_after_tax"]) #  "lifecycle_om_costs_after_tax",
-    res = np.append(res, fin["lifecycle_capital_costs_plus_om_after_tax"]) # "lifecycle_capital_costs_plus_om_after_tax"
-    res = np.append(res, fin["lifecycle_elecbill_after_tax"]) #  "lifecycle_elecbill_after_tax",
-    res = np.append(res, fin["lifecycle_emissions_cost_climate"]) #  "lifecycle_emissions_cost_climate"
-    res = np.append(res, r["solver_seconds"])    # "REopt Solver Seconds"
-
-    #res = np.append(res, r["Financial"]["simple_payback_years"]) # "Simple Payback [years]",
-    res = np.append(res, r["Financial"]["initial_capital_costs_after_incentives"]) #capital costs
 
     res = np.append(res, np.sum(r["ElectricLoad"]["load_series_kw"]))  # "Annual Load [kWh]"
 
     #res = np.append(res, tariff["year_one_bill_before_tax_bau"])   # "Year One Bill [$]",
     res = np.append(res, tariff["year_one_bill_before_tax"])    # "Year One Bill [$]",
+    res = np.append(res, fin["lifecycle_elecbill_after_tax"]) #  "lifecycle_elecbill_after_tax",
     #tot_sav = tariff["year_one_bill_before_tax_bau"]-tariff["year_one_bill_before_tax"]
     #res = np.append(res, tot_sav)    # "Year One Bill Savings [$]",
 
@@ -99,8 +89,6 @@ def SaveOutputs(res, name, colHeaders):
     #res = np.append(res, site["annual_emissions_tonnes_CO2_bau"])    # "Year One Emissions_BAU [tonnes CO2]",
     res = np.append(res, site["annual_emissions_tonnes_CO2"])    # "Year One Emissions [tonnes CO2]",
     #res = np.append(res, site["annual_emissions_tonnes_CO2_bau"]-site["annual_emissions_tonnes_CO2"])    # "Year One Emissions Savings [tonnes CO2]",
-    #res = np.append(res, r["Financial"]["lifecycle_emissions_cost_health_bau"]-r["Financial"]["lifecycle_emissions_cost_health"]) # "Avoided Health Damage Costs [$]"
-    res = np.append(res, r["Financial"]["lifecycle_emissions_cost_health"]) # "Health Damage Costs [$]"
             
     return res
 
@@ -138,9 +126,9 @@ df_all.round(3).to_csv(os.path.join(result_summary_path, "scenario_"+scenario_na
 ## Save result to json file
 json_output = {}
 output_set = df_all.index.to_list()
-attribute_set = ["lcc", "lifecycle_capital_costs", "lifecycle_om_costs_after_tax", "lifecycle_elecbill_after_tax", 
-                 "lifecycle_emissions_cost_climate", "lifecycle_emissions_tonnes_CO2", "lifecycle_emissions_cost_health"]
-
+attribute_set = ["lcc", "lifecycle capital cost", "lifecycle O&M cost after tax", "lifecycle elecbill after tax", 
+                 "lifecycle emissions [tonnes CO2]"]
+print(attribute_set)
 for output in output_set:
      json_output[output] = {}
      for attribute in attribute_set:

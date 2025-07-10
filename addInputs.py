@@ -29,19 +29,30 @@ def addInputs():
     # OPTIONAL, if not provided ('NA'), 
     # REopt default values will be used
     #####################################################
-    macrs_bonus_fraction = 'NA'
+    macrs_bonus_fraction = 'NA'                    
     macrs_itc_reduction = 'NA'
     federal_itc_fraction = 'NA'
-
+    offtaker_discount_rate_fraction = 0
+    offtaker_tax_rate_fraction = 0
+    om_cost_escalation_rate_fraction = 0
+    elec_cost_escalation_rate_fraction = 0
+    owner_discount_rate_fraction = 0
+    owner_tax_rate_fraction = 0
 
     # 6. Utility Tariff
-    # REQUIRED, can use urdb label (string)
-    # or own json file
+    # REQUIRED
+    # Three options, flat rate (utility_rate), urdb label (string), monthly rates, or custom json file
     #####################################################
-    utility_tarrif = "utility_rates.json"
+    utility_rate = 'flat'       # 'flat', 'label', 'monthly_rates', or 'custom'
+    annual_energy_rate = 0.25   # Provide rate if utility_rate = 'flat'
+    utility_tarrif = "utility_label.csv"   # Provide if using urdb label ("utility_label.csv") 
+                                            # of monthly rates ("utility_rates.csv)
+                                            # or custom json file ("utility_rates.json" )
     
-    return (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,utility_tarrif,
-            om_cost_per_sqft_year,installed_cost_heatpump_per_ton,installed_cost_ghx_per_ft,
-            installed_cost_building_hydronic_loop_per_sqft)
+    return (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,
+            offtaker_discount_rate_fraction,offtaker_tax_rate_fraction,om_cost_escalation_rate_fraction,
+            elec_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,
+            utility_tarrif,utility_rate,annual_energy_rate,utility_tarrif,om_cost_per_sqft_year,
+            installed_cost_heatpump_per_ton,installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft)
 
 addInputs()                      
