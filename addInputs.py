@@ -32,12 +32,12 @@ def addInputs():
     macrs_bonus_fraction = 'NA'                    
     macrs_itc_reduction = 'NA'
     federal_itc_fraction = 'NA'
-    offtaker_discount_rate_fraction = 0
-    offtaker_tax_rate_fraction = 0
-    om_cost_escalation_rate_fraction = 0
-    elec_cost_escalation_rate_fraction = 0
-    owner_discount_rate_fraction = 0
-    owner_tax_rate_fraction = 0
+    offtaker_discount_rate_fraction = 'NA'
+    offtaker_tax_rate_fraction = 'NA'
+    om_cost_escalation_rate_fraction = 'NA'
+    elec_cost_escalation_rate_fraction = 'NA'
+    owner_discount_rate_fraction = 'NA'
+    owner_tax_rate_fraction = 'NA'
 
     # 6. Utility Tariff
     # REQUIRED
