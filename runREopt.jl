@@ -6,9 +6,10 @@ using JSON
 
 dir = @__DIR__
 run_path = ARGS[1]
+scenario_name = ARGS[2]
 
-results_path = joinpath(run_path, "results", "results_json")          # where to save results
-posts_path = joinpath(run_path, "inputs_all")
+results_path = joinpath(run_path, scenario_name, "results", "results_json")          # where to save results
+posts_path = joinpath(run_path, scenario_name, "inputs_all")
 
 for file in readdir(posts_path) 
         print("\n",file)

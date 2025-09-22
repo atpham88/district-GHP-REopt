@@ -5,12 +5,15 @@ import sys
 import json
 
 dir = os.getcwd()
-run_path = sys.argv[1]
+main_path = sys.argv[1]
 scenario_name = sys.argv[2]
+isBAU = int(sys.argv[3])
+
+run_path = os.path.join(main_path,scenario_name)
 
 # For debugging
 #scenario_name = 'no_fractions'
-#run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY25/URBANopt_REopt/5_building_site"
+#run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY25/URBANopt_REopt/5_building_site/GHP_district"
 
 ### PATH NAMES ### 
 outputs_path = run_path
@@ -59,7 +62,8 @@ def SaveOutputs(res, name, colHeaders):
     tariff = r["ElectricTariff"]
     site = r["Site"]
     fin = r["Financial"]
-    ghp = r["GHP"]
+    if isBAU == 0:
+        ghp = r["GHP"]
 
     #capital costs
     res = np.append(res, building) # Building Name
@@ -69,8 +73,11 @@ def SaveOutputs(res, name, colHeaders):
     #res = np.append(res, ((r["Financial"]["npv"])/(r["Financial"]["lcc_bau"]))*100) # "Analysis Period Elec Cost Savings [%]"
     res = np.append(res, fin["lifecycle_capital_costs"]) #  "lifecycle_generation_tech_capital_costs",
     res = np.append(res, fin["initial_capital_costs"]) #capital costs
-    res = np.append(res, fin["initial_capital_costs_after_incentives"]) #capital costs
-    res = np.append(res, ghp["ghx_residual_value_present_value"]) #ghx residual value
+    res = np.append(res, fin["initial_capital_costs_after_incentives"])
+    if isBAU == 0: #capital costs
+        res = np.append(res, ghp["ghx_residual_value_present_value"]) #ghx residual value
+    else:
+        res = np.append(res, 0)
     res = np.append(res, fin["lifecycle_om_costs_after_tax"]) #  "lifecycle_om_costs_after_tax",
 
     res = np.append(res, np.sum(r["ElectricLoad"]["load_series_kw"]))  # "Annual Load [kWh]"

@@ -1,17 +1,24 @@
 import pandas as pd
+import numpy as np
 import os
+import glob
 import sys
 import json
 from addInputs import addInputs
+import matplotlib.pyplot as plt
 
 dir = os.getcwd()
-run_path = sys.argv[1]
+main_path = sys.argv[1]
 scenario_name = sys.argv[2]
+isBAU = int(sys.argv[3])
+
+run_path = os.path.join(main_path,scenario_name)
 
 # For debugging
 #scenario_name = 'no_fractions'
 #run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY25/URBANopt_REopt/5_building_site"
-    
+# Note: KWH_THERMAL_PER_TONHOUR = 3.51685
+#     
 #################### PATH NAMES ####################
 # Input path
 data_path = run_path
@@ -31,6 +38,14 @@ if not os.path.exists(results_path):
 result_summary_path = os.path.join(outputs_path, 'results', 'results_summary')
 if not os.path.exists(result_summary_path):
     os.makedirs(result_summary_path)
+
+files_posts = glob.glob(os.path.join(data_path, 'inputs_all/*'))
+files_results = glob.glob(os.path.join(outputs_path, 'results', 'results_json/*'))
+
+for f in files_posts:
+    os.remove(f)
+for f in files_results:
+    os.remove(f)        
 
 ################### READ INPUTS ####################
 (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,
@@ -64,18 +79,76 @@ if len(building_set) > 0:
         post["Site"]["longitude"] = lon
         
         # Building electric load:
-        building_elec_load_tot = investment_scenario['heating_electric_power_'+str(building)]/1000 + investment_scenario['pump_power_'+str(building)]/1000 + investment_scenario['ets_pump_power_'+str(building)]/1000
+        building_elec_load_tot = investment_scenario['heating_electric_power_'+str(building)]/1000 + investment_scenario['cooling_electric_power_'+str(building)]/1000 + investment_scenario['pump_power_'+str(building)]/1000 + investment_scenario['ets_pump_power_'+str(building)]/1000
         investment_scenario['electric_load_tot_'+str(building)] = building_elec_load_tot
         building_elec_load = investment_scenario['electric_load_tot_'+str(building)]
+
+        # Plotting load profiles for each site
+        fig, ax = plt.subplots(figsize=(9,6))
+        plt.xlabel("Date",fontsize=14)
+        plt.ylabel("Building Electricity Consumption (kW)", fontsize=14)
+        #if str(building) == "1":
+        #    plt.ylim(0,25)
+        #elif str(building) == "2":
+        #    plt.ylim(0,6)
+        #elif str(building) == "3":
+        #    plt.ylim(0,7)
+        #elif str(building) == "4":
+        #    plt.ylim(0,10)
+        #elif str(building) == "5":
+        #    plt.ylim(0,7)
+
+        ax.plot(building_elec_load, color = 'skyblue', linewidth=0.5)
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan']
+        plt.xticks(np.linspace(0,8760,13), months)
+        if isBAU == 1:
+            plt.ylim(0,180)
+        plt.title("Electricity Consumption" + " - "+str(building),fontsize=14)
+        fig_path = os.path.join(run_path, "figures")
+        if not os.path.exists(fig_path):
+            os.makedirs(fig_path)
+        fig.savefig(os.path.join(fig_path, "electricity_consumption_building_"+str(building_id)+".png"))
+
 
         post["ElectricLoad"] = {}
         post["ElectricLoad"]["loads_kw"] = list(building_elec_load)
         post["ElectricLoad"]["year"] = 2025
 
-        # Space heating load is not needed for URBANopt district GHP analysis but required for REopt's formatting purpose,
-        # so, set that to very small numbers close to 0
+        # Space heating load is not needed for URBANopt district GHP analysis but required for BAU analysis and for REopt's formatting purpose,
+        # so, in case it's not needed set that to very small numbers close to 0
         post["SpaceHeatingLoad"] = {}
-        post["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = [0.0000001] * 8760
+
+        if isBAU == 0:
+            post["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = [0.0000001] * 8760
+        elif isBAU == 1:
+            building_heating_load_tot = investment_scenario['heating_fuel_'+str(building)]/1000
+            
+            # Plotting heating load profiles for each site
+            fig, ax = plt.subplots(figsize=(9,6))
+            plt.xlabel("Date",fontsize=14)
+            plt.ylabel("Building Fuel Consumption (MMBtu)", fontsize=14)
+            plt.ylim(0,3.5)
+            #if building_id == 1252:
+            #    plt.ylim(0,20)
+            #elif building_id == 39593:
+            #    plt.ylim(0,7.5)
+            #elif building_id == 63944:
+            #    plt.ylim(0,15)
+            #elif building_id == 69264:
+            #    plt.ylim(0,5)
+            #elif building_id == 461703:
+            #    plt.ylim(0,25)
+
+            ax.plot(building_heating_load_tot, color = 'lightpink', linewidth=0.5)
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan']
+            plt.xticks(np.linspace(0,8760,13), months)
+            plt.title("Fuel Consumption" + " - "+str(building),fontsize=14)
+            fig_path = os.path.join(run_path, "figures")
+            if not os.path.exists(fig_path):
+                os.makedirs(fig_path)
+            fig.savefig(os.path.join(fig_path, "fuel_consumption_building_"+str(building_id)+".png"))
+
+            post["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_heating_load_tot)
 
         # Utility tariff
         post["ElectricTariff"] = {}
@@ -127,32 +200,34 @@ if len(building_set) > 0:
         floor_area = building_ghp_data.loc[building_ghp_data.index=="floor_area_sqft",building_ghp_data.columns==building_id].iloc[0,0]
         fuel_cost_per_mmbtu = building_ghp_data.loc[building_ghp_data.index=="fuel_cost_per_mmbtu",building_ghp_data.columns==building_id].iloc[0,0]
 
-        post["GHP"] = {}  
-        post["GHP"]["require_ghp_purchase"] = 1
-        post["GHP"]["building_sqft"] = floor_area
-        post["GHP"]["heatpump_capacity_sizing_factor_on_peak_load"] = 1.0
+        if isBAU == 0:
+            post["GHP"] = {}  
+            post["GHP"]["require_ghp_purchase"] = 1
+            post["GHP"]["building_sqft"] = floor_area
+            post["GHP"]["heatpump_capacity_sizing_factor_on_peak_load"] = 1.0
 
-        # GHP/GHX capital & O&M costs:
-        if om_cost_per_sqft_year != 'NA':
-            post["GHP"]["om_cost_per_sqft_year"] = om_cost_per_sqft_year
-        if installed_cost_heatpump_per_ton != 'NA':
-            post["GHP"]["installed_cost_heatpump_per_ton"] = installed_cost_heatpump_per_ton
-        if installed_cost_ghx_per_ft != 'NA':
-            post["GHP"]["installed_cost_ghx_per_ft"] = installed_cost_ghx_per_ft
-        if installed_cost_building_hydronic_loop_per_sqft != 'NA':
-            post["GHP"]["installed_cost_building_hydronic_loop_per_sqft"] = installed_cost_building_hydronic_loop_per_sqft
+            # GHP/GHX capital & O&M costs:
+            if om_cost_per_sqft_year != 'NA':
+                post["GHP"]["om_cost_per_sqft_year"] = om_cost_per_sqft_year
+            if installed_cost_heatpump_per_ton != 'NA':
+                post["GHP"]["installed_cost_heatpump_per_ton"] = installed_cost_heatpump_per_ton
+            if installed_cost_ghx_per_ft != 'NA':
+                post["GHP"]["installed_cost_ghx_per_ft"] = installed_cost_ghx_per_ft
+            if installed_cost_building_hydronic_loop_per_sqft != 'NA':
+                post["GHP"]["installed_cost_building_hydronic_loop_per_sqft"] = installed_cost_building_hydronic_loop_per_sqft
 
-        # GHP incentives:
-        if (macrs_bonus_fraction != 'NA'):
-            post["GHP"]["macrs_bonus_fraction"] = macrs_bonus_fraction
-        if (macrs_itc_reduction != 'NA'):
-            post["GHP"]["macrs_itc_reduction"] = macrs_itc_reduction
-        if (federal_itc_fraction != 'NA'):
-            post["GHP"]["federal_itc_fraction"] = federal_itc_fraction 
+            # GHP incentives:
+            if (macrs_bonus_fraction != 'NA'):
+                post["GHP"]["macrs_bonus_fraction"] = macrs_bonus_fraction
+            if (macrs_itc_reduction != 'NA'):
+                post["GHP"]["macrs_itc_reduction"] = macrs_itc_reduction
+            if (federal_itc_fraction != 'NA'):
+                post["GHP"]["federal_itc_fraction"] = federal_itc_fraction 
 
         # ExistingBoiler settings for BAU
         post["ExistingBoiler"] = {}
         post["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu
+        post["ExistingBoiler"]["installed_cost_per_mmbtu_per_hour"] = 56000 
 
         # ghpghx_responses inputs (this is where all the URBANopt outputs go to)
         ghpghx_output = {}
@@ -173,10 +248,15 @@ if len(building_set) > 0:
         ghpghx_output["inputs"]["heating_thermal_load_mmbtu_per_hr"] = [0.0000001] * 8760
         ghpghx_output["inputs"]["cooling_thermal_load_ton"] = [0] * 8760
 
-        post["GHP"]["ghpghx_responses"] = [ghpghx_output]
-
-        with open(os.path.join(posts_path, scenario_name + '_GHP_building_' + str(building) +'.json'), 'w') as handle:
-            json.dump(post, handle)  
+        if isBAU == 0:
+            post["GHP"]["ghpghx_responses"] = [ghpghx_output]
+        
+        if isBAU == 0:
+            with open(os.path.join(posts_path, scenario_name + '_building_' + str(building) +'.json'), 'w') as handle:
+                json.dump(post, handle)
+        elif isBAU == 1:
+            with open(os.path.join(posts_path, scenario_name + '_building_' + str(building) +'.json'), 'w') as handle:
+                json.dump(post, handle)
     
 # District-level inputs:
 if len(ghx_set) > 0: 
@@ -192,6 +272,30 @@ if len(ghx_set) > 0:
 
         # GHX's electricity consumption:
         ghx_pump_electric_con = investment_scenario["electrical_power_consumed_"+str(ghx)]/1000
+        
+        # Plotting GHX electricity consumption
+        fig, ax = plt.subplots(figsize=(9,6))
+        plt.xlabel("Date",fontsize=14)
+        plt.ylabel("GHX Electricity Consumption (kW)", fontsize=14)
+        #if building_id == 1252:
+        #    plt.ylim(0,20)
+        #elif building_id == 39593:
+        #    plt.ylim(0,7.5)
+        #elif building_id == 63944:
+        #    plt.ylim(0,15)
+        #elif building_id == 69264:
+        #    plt.ylim(0,5)
+        #elif building_id == 461703:
+        #    plt.ylim(0,25)
+        ax.plot(ghx_pump_electric_con, color = 'skyblue', linewidth=0.5)
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan']
+        plt.xticks(np.linspace(0,8760,13), months)
+        plt.title("Electricity Consumption" + " - GHX "+str(ghx),fontsize=14)
+        fig_path = os.path.join(run_path, "figures")
+        if not os.path.exists(fig_path):
+            os.makedirs(fig_path)
+        fig.savefig(os.path.join(fig_path, "electricity_consumption_ghx_"+str(ghx)+".png"))
+
         post_dist["ElectricLoad"] = {}
         post_dist["ElectricLoad"]["loads_kw"] = list(ghx_pump_electric_con)
         post_dist["ElectricLoad"]["year"] = 2025
@@ -263,35 +367,38 @@ if len(ghx_set) > 0:
         ghpghx_output["outputs"]["yearly_total_electric_consumption_series_kw"] = [0] * 8760
         ghpghx_output["outputs"]["yearly_heating_heatpump_electric_consumption_series_kw"] = [0] * 8760
         ghpghx_output["outputs"]["yearly_cooling_heatpump_electric_consumption_series_kw"] = [0] * 8760
-
-        post_dist["GHP"] = {}  
-        post_dist["GHP"]["require_ghp_purchase"] = 1
-        post_dist["GHP"]["building_sqft"] = 0
-        post_dist["GHP"]["heatpump_capacity_sizing_factor_on_peak_load"] = 1.0
         
-        # GHP/GHX capital & O&M costs:
-        if om_cost_per_sqft_year != 'NA':
-            post_dist["GHP"]["om_cost_per_sqft_year"] = om_cost_per_sqft_year
-        if installed_cost_heatpump_per_ton != 'NA':
-            post_dist["GHP"]["installed_cost_heatpump_per_ton"] = installed_cost_heatpump_per_ton
-        if installed_cost_ghx_per_ft != 'NA':
-            post_dist["GHP"]["installed_cost_ghx_per_ft"] = installed_cost_ghx_per_ft
-        if installed_cost_building_hydronic_loop_per_sqft != 'NA':
-            post_dist["GHP"]["installed_cost_building_hydronic_loop_per_sqft"] = installed_cost_building_hydronic_loop_per_sqft
+        if isBAU == 0:
+            post_dist["GHP"] = {}  
+            post_dist["GHP"]["require_ghp_purchase"] = 1
+            post_dist["GHP"]["building_sqft"] = 0
+            post_dist["GHP"]["heatpump_capacity_sizing_factor_on_peak_load"] = 1.0
+        
+            # GHP/GHX capital & O&M costs:
+            if om_cost_per_sqft_year != 'NA':
+                post_dist["GHP"]["om_cost_per_sqft_year"] = om_cost_per_sqft_year
+            if installed_cost_heatpump_per_ton != 'NA':
+                post_dist["GHP"]["installed_cost_heatpump_per_ton"] = installed_cost_heatpump_per_ton
+            if installed_cost_ghx_per_ft != 'NA':
+                post_dist["GHP"]["installed_cost_ghx_per_ft"] = installed_cost_ghx_per_ft
+            if installed_cost_building_hydronic_loop_per_sqft != 'NA':
+                post_dist["GHP"]["installed_cost_building_hydronic_loop_per_sqft"] = installed_cost_building_hydronic_loop_per_sqft
 
-        # GHP incentives:
-        if (macrs_bonus_fraction != 'NA'):
-            post_dist["GHP"]["macrs_bonus_fraction"] = macrs_bonus_fraction
-        if (macrs_itc_reduction != 'NA'):
-            post_dist["GHP"]["macrs_itc_reduction"] = macrs_itc_reduction
-        if (federal_itc_fraction != 'NA'):
-            post_dist["GHP"]["federal_itc_fraction"] = federal_itc_fraction 
+            # GHP incentives:
+            if (macrs_bonus_fraction != 'NA'):
+                post_dist["GHP"]["macrs_bonus_fraction"] = macrs_bonus_fraction
+            if (macrs_itc_reduction != 'NA'):
+                post_dist["GHP"]["macrs_itc_reduction"] = macrs_itc_reduction
+            if (federal_itc_fraction != 'NA'):
+                post_dist["GHP"]["federal_itc_fraction"] = federal_itc_fraction 
 
         # ExistingBoiler settings for BAU
         post_dist["ExistingBoiler"] = {}
         post_dist["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu_dist
-
-        post_dist["GHP"]["ghpghx_responses"] = [ghpghx_output]
+        post_dist["ExistingBoiler"]["installed_cost_per_mmbtu_per_hour"] = 56000 
+ 
+        if isBAU == 0:
+            post_dist["GHP"]["ghpghx_responses"] = [ghpghx_output]
 
         with open(os.path.join(posts_path, scenario_name + '_GHX_' + str(ghx) + '.json'), 'w') as handle:
             json.dump(post_dist, handle)  
