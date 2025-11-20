@@ -1,7 +1,7 @@
 
 def addInputs():
     ##################################################### 
-    # Specify all your district GHP inputs in this file #
+    # Specify all your building and district energy system inputs in this file #
     #####################################################
     
     # 1. District inputs
@@ -16,14 +16,14 @@ def addInputs():
                                     # This file include timeseries of electric consumption, 
                                     # GHP size, floor area for each building
 
-    # 3. Capital costs 
+    # 3. Capital amd O&M costs 
     # OPTIONAL, if not provided ('NA'), 
     # REopt default values will be used
     #####################################################
-    installed_cost_heatpump_per_ton = 'NA'                  # GHP installation cost per ton
-    installed_cost_ghx_per_ft = 'NA'                        # GHX installation cost per ft
-    installed_cost_building_hydronic_loop_per_sqft = 'NA'   # Hydronic loop installation cost per sqft
-    om_cost_per_sqft_year = 0                               # O&M cost
+    installed_cost_heatpump_per_ton = 1904                 # GHP installation cost per ton
+    installed_cost_ghx_per_ft = 17                        # GHX installation cost per ft
+    installed_cost_building_hydronic_loop_per_sqft = 0   # Hydronic loop installation cost per sqft
+    om_cost_per_sqft_year = -0.51                          # O&M cost
 
     # 4. Financials 
     # OPTIONAL, if not provided ('NA'), 
@@ -43,7 +43,7 @@ def addInputs():
     # REQUIRED
     # Three options, flat rate (utility_rate), urdb label (string), monthly rates, or custom json file
     #####################################################
-    utility_rate = 'flat'       # 'flat', 'label', 'monthly_rates', or 'custom'
+    utility_rate = 'label'       # 'flat', 'label', 'monthly_rates', or 'custom'
     annual_energy_rate = 0.25   # Provide rate if utility_rate = 'flat'
     utility_tarrif = "utility_label.csv"   # Provide if using urdb label ("utility_label.csv") 
                                             # of monthly rates ("utility_rates.csv)

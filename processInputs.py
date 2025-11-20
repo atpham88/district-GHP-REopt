@@ -12,11 +12,13 @@ main_path = sys.argv[1]
 scenario_name = sys.argv[2]
 isBAU = int(sys.argv[3])
 
+# For debugging
+#scenario_name = 'GHP_standalone'
+#main_path = "/Users/apham/Documents/Projects/REopt_Projects/FY25/URBANopt_REopt/5_building_site"
+#isBAU = 0
+
 run_path = os.path.join(main_path,scenario_name)
 
-# For debugging
-#scenario_name = 'no_fractions'
-#run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY25/URBANopt_REopt/5_building_site"
 # Note: KWH_THERMAL_PER_TONHOUR = 3.51685
 #     
 #################### PATH NAMES ####################
@@ -87,27 +89,27 @@ if len(building_set) > 0:
         fig, ax = plt.subplots(figsize=(9,6))
         plt.xlabel("Date",fontsize=14)
         plt.ylabel("Building Electricity Consumption (kW)", fontsize=14)
-        #if str(building) == "1":
-        #    plt.ylim(0,25)
-        #elif str(building) == "2":
-        #    plt.ylim(0,6)
-        #elif str(building) == "3":
-        #    plt.ylim(0,7)
-        #elif str(building) == "4":
-        #    plt.ylim(0,10)
-        #elif str(building) == "5":
-        #    plt.ylim(0,7)
+        if str(building) == "Restaurant":
+            plt.ylim(0,25)
+        elif str(building) == "Hotel":
+            plt.ylim(0,180)
+        elif str(building) == "Office":
+            plt.ylim(0,360)
+        elif str(building) == "Apartment":
+            plt.ylim(0,40)
+        elif str(building) == "Mall":
+            plt.ylim(0,140)
 
         ax.plot(building_elec_load, color = 'skyblue', linewidth=0.5)
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan']
         plt.xticks(np.linspace(0,8760,13), months)
-        if isBAU == 1:
-            plt.ylim(0,180)
+        #if isBAU == 1:
+        #    plt.ylim(0,180)
         plt.title("Electricity Consumption" + " - "+str(building),fontsize=14)
         fig_path = os.path.join(run_path, "figures")
         if not os.path.exists(fig_path):
             os.makedirs(fig_path)
-        fig.savefig(os.path.join(fig_path, "electricity_consumption_building_"+str(building_id)+".png"))
+        fig.savefig(os.path.join(fig_path, "electricity_consumption_building_"+str(building_id)+".png"),dpi=300,bbox_inches='tight', pad_inches=0.1)
 
 
         post["ElectricLoad"] = {}
@@ -127,7 +129,7 @@ if len(building_set) > 0:
             fig, ax = plt.subplots(figsize=(9,6))
             plt.xlabel("Date",fontsize=14)
             plt.ylabel("Building Fuel Consumption (MMBtu)", fontsize=14)
-            plt.ylim(0,3.5)
+            #plt.ylim(0,3.5)
             #if building_id == 1252:
             #    plt.ylim(0,20)
             #elif building_id == 39593:
@@ -146,7 +148,7 @@ if len(building_set) > 0:
             fig_path = os.path.join(run_path, "figures")
             if not os.path.exists(fig_path):
                 os.makedirs(fig_path)
-            fig.savefig(os.path.join(fig_path, "fuel_consumption_building_"+str(building_id)+".png"))
+            fig.savefig(os.path.join(fig_path, "fuel_consumption_building_"+str(building_id)+".png"),dpi=300,bbox_inches='tight', pad_inches=0.1)
 
             post["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_heating_load_tot)
 
@@ -227,7 +229,7 @@ if len(building_set) > 0:
         # ExistingBoiler settings for BAU
         post["ExistingBoiler"] = {}
         post["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu
-        post["ExistingBoiler"]["installed_cost_per_mmbtu_per_hour"] = 56000 
+        post["ExistingBoiler"]["installed_cost_per_mmbtu_per_hour"] = 59920 
 
         # ghpghx_responses inputs (this is where all the URBANopt outputs go to)
         ghpghx_output = {}
