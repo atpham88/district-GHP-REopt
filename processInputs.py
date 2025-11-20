@@ -13,8 +13,8 @@ scenario_name = sys.argv[2]
 isBAU = int(sys.argv[3])
 
 # For debugging
-#scenario_name = 'GHP_standalone'
-#main_path = "/Users/apham/Documents/Projects/REopt_Projects/FY25/URBANopt_REopt/5_building_site"
+#scenario_name = 'balanced'
+#main_path = "/Users/apham/Documents/Projects/REopt_Projects/FY26/URBANopt-REopt/unbalanced vs balanced loads"
 #isBAU = 0
 
 run_path = os.path.join(main_path,scenario_name)
@@ -89,16 +89,8 @@ if len(building_set) > 0:
         fig, ax = plt.subplots(figsize=(9,6))
         plt.xlabel("Date",fontsize=14)
         plt.ylabel("Building Electricity Consumption (kW)", fontsize=14)
-        if str(building) == "Restaurant":
-            plt.ylim(0,25)
-        elif str(building) == "Hotel":
-            plt.ylim(0,180)
-        elif str(building) == "Office":
-            plt.ylim(0,360)
-        elif str(building) == "Apartment":
-            plt.ylim(0,40)
-        elif str(building) == "Mall":
-            plt.ylim(0,140)
+        #plt.ylim(0,25)
+
 
         ax.plot(building_elec_load, color = 'skyblue', linewidth=0.5)
         months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan']
@@ -110,7 +102,6 @@ if len(building_set) > 0:
         if not os.path.exists(fig_path):
             os.makedirs(fig_path)
         fig.savefig(os.path.join(fig_path, "electricity_consumption_building_"+str(building_id)+".png"),dpi=300,bbox_inches='tight', pad_inches=0.1)
-
 
         post["ElectricLoad"] = {}
         post["ElectricLoad"]["loads_kw"] = list(building_elec_load)

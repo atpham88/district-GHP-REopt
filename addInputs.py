@@ -23,7 +23,7 @@ def addInputs():
     installed_cost_heatpump_per_ton = 1904                 # GHP installation cost per ton
     installed_cost_ghx_per_ft = 17                        # GHX installation cost per ft
     installed_cost_building_hydronic_loop_per_sqft = 0   # Hydronic loop installation cost per sqft
-    om_cost_per_sqft_year = -0.51                          # O&M cost
+    om_cost_per_sqft_year = 0                          # O&M cost
 
     # 4. Financials 
     # OPTIONAL, if not provided ('NA'), 
