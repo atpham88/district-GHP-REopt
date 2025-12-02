@@ -43,11 +43,16 @@ def addInputs():
     # REQUIRED
     # Three options, flat rate (utility_rate), urdb label (string), monthly rates, or custom json file
     #####################################################
-    utility_rate = 'label'       # 'flat', 'label', 'monthly_rates', or 'custom'
-    annual_energy_rate = 0.25   # Provide rate if utility_rate = 'flat'
-    utility_tarrif = "utility_label.csv"   # Provide if using urdb label ("utility_label.csv") 
-                                            # of monthly rates ("utility_rates.csv)
-                                            # or custom json file ("utility_rates.json" )
+    utility_rate = 'custom'         # 'flat', 'label', 'monthly_rates', or 'custom'
+    annual_energy_rate = 0.25       # Provide rate if utility_rate = 'flat'
+
+    if utility_rate == 'label':
+        utility_tarrif = "utility_label.csv"    # Provide if using urdb label ("utility_label.csv") 
+    elif utility_rate == 'monthly_rates':
+        utility_tarrif = "utility_rates.csv"    # if custom json file ("utility_rates.csv" )
+    elif utility_rate == 'custom':
+        utility_tarrif = "utility_rates.json"   # if custom json file ("utility_rates.json" )
+
     
     return (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,
             offtaker_discount_rate_fraction,offtaker_tax_rate_fraction,om_cost_escalation_rate_fraction,
