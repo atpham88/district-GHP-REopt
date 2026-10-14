@@ -24,7 +24,6 @@ Before running the model, you need to prepare your run folder and get your data 
     1) `processInputs.py` which processes all the inputs specified in `addInputs.py` and generates REopt-format json inputs file for the buildings and the district GHX;
     2) `runREopt.jl` which runs REopt to perform LCCA for each of the buildings and the district GHX;
     3) `processOutputs.py` which processes all the json outputs from REopt and combine them together to create a district json output, as well as a csv summary file with financial outputs for each building, for the district GHX, and total district financial outputs.
-- Please use the `ghp-district` branch to run for now. Can use main to run at the end of this FY when changes are merged in.
 
 ## 4. How to run scripts for district GHP LCCA by calling REopt's API
 - Repeat the same steps as in step 3 but in `run_api.sh`
