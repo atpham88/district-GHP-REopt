@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
+import sys
 import os
 import glob
-import sys
 import json
 from addInputs import addInputs
 import matplotlib.pyplot as plt
@@ -13,8 +13,8 @@ scenario_name = sys.argv[2]
 isBAU = int(sys.argv[3])
 
 # For debugging
-#scenario_name = 'balanced'
-#main_path = "/Users/apham/Documents/Projects/REopt_Projects/FY26/URBANopt-REopt/unbalanced vs balanced loads"
+#scenario_name = 'ghp_test'
+#main_path = "/Users/apham/Documents/Projects/REopt_Projects/FY27/GHP replacement cost"
 #isBAU = 0
 
 run_path = os.path.join(main_path,scenario_name)
@@ -55,7 +55,8 @@ for f in files_results:
  elec_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,
  utility_tarrif,utility_rate,annual_energy_rate,utility_tarrif,om_cost_per_sqft_year,
  installed_cost_heatpump_per_ton,replacement_year,replace_cost_per_ton,
- installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft) = addInputs()
+ installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft,
+ fuel_cost_per_mmbtu,installed_cost_per_mmbtu_per_hour) = addInputs()
 
 investment_scenario = pd.read_excel(os.path.join(data_path, building_file), sheet_name= "Timeseries")
 building_ghp_data = pd.read_excel(os.path.join(data_path, building_file), sheet_name= "GHP",index_col=0)
@@ -65,7 +66,6 @@ district_ghx_data = pd.read_csv(os.path.join(data_path, district_file), index_co
 ghx_set = district_ghx_data.columns.to_list()
 lon = district_ghx_data.loc[district_ghx_data.index=="lon",district_ghx_data.columns==ghx_set[0]].iloc[0,0]
 lat = district_ghx_data.loc[district_ghx_data.index=="lat",district_ghx_data.columns==ghx_set[0]].iloc[0,0]
-fuel_cost_per_mmbtu_dist = district_ghx_data.loc[district_ghx_data.index=="fuel_cost_per_mmbtu",district_ghx_data.columns==ghx_set[0]].iloc[0,0]
 
 ################### BUILDING IDS ###################
 building_set = building_ghp_data.columns.to_list()
@@ -392,8 +392,8 @@ if len(ghx_set) > 0:
 
         # ExistingBoiler settings for BAU
         post_dist["ExistingBoiler"] = {}
-        post_dist["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu_dist
-        post_dist["ExistingBoiler"]["installed_cost_per_mmbtu_per_hour"] = 56000 
+        post_dist["ExistingBoiler"]["fuel_cost_per_mmbtu"] = installed_cost_per_mmbtu_per_hour
+        post_dist["ExistingBoiler"]["installed_cost_per_mmbtu_per_hour"] = installed_cost_per_mmbtu_per_hour 
  
         if isBAU == 0:
             post_dist["GHP"]["ghpghx_responses"] = [ghpghx_output]

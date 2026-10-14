@@ -26,6 +26,8 @@ def addInputs():
     installed_cost_ghx_per_ft = 19                          # GHX installation cost per ft
     installed_cost_building_hydronic_loop_per_sqft = 0      # Hydronic loop installation cost per sqft
     om_cost_per_sqft_year = 0                               # O&M cost
+    fuel_cost_per_mmbtu = 15                                # Fuel cost of the BAU/backup system
+    installed_cost_per_mmbtu_per_hour = 56000               # Installed cost of new boiler (if GHP is not invested)
 
     # 4. Financials 
     # OPTIONAL, if not provided ('NA'), 
@@ -61,6 +63,7 @@ def addInputs():
             elec_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,
             utility_tarrif,utility_rate,annual_energy_rate,utility_tarrif,om_cost_per_sqft_year,
             installed_cost_heatpump_per_ton,replacement_year,replace_cost_per_ton,
-            installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft)
+            installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft,
+            fuel_cost_per_mmbtu,installed_cost_per_mmbtu_per_hour)
 
 addInputs()                      

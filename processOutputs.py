@@ -9,11 +9,12 @@ main_path = sys.argv[1]
 scenario_name = sys.argv[2]
 isBAU = int(sys.argv[3])
 
-run_path = os.path.join(main_path,scenario_name)
-
 # For debugging
-#scenario_name = 'no_fractions'
-#run_path = "/Users/apham/Documents/Projects/REopt_Projects/FY25/URBANopt_REopt/5_building_site/GHP_district"
+#scenario_name = 'ghp_test'
+#main_path = "/Users/apham/Documents/Projects/REopt_Projects/FY27/GHP replacement cost"
+#isBAU = 0
+
+run_path = os.path.join(main_path,scenario_name)
 
 ### PATH NAMES ### 
 outputs_path = run_path

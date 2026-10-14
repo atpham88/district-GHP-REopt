@@ -1,5 +1,5 @@
 using Pkg
-using Xpress
+using HiGHS
 using JuMP
 using REopt
 using JSON
@@ -18,7 +18,7 @@ for file in readdir(posts_path)
     else
         post = JSON.parsefile("$posts_path/$file")
     end
-    m = Model(optimizer_with_attributes(Xpress.Optimizer, "OUTPUTLOG" => 0))
+    m = Model(optimizer_with_attributes(HiGHS.Optimizer, "output_flag" => false))
     #m2 = Model(optimizer_with_attributes(Xpress.Optimizer, "OUTPUTLOG" => 0))
 
     #r = run_reopt([m1,m2], REoptInputs(Scenario(post)))
