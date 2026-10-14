@@ -225,7 +225,7 @@ if len(building_set) > 0:
         # ExistingBoiler settings for BAU
         post["ExistingBoiler"] = {}
         post["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu
-        post["ExistingBoiler"]["installed_cost_per_mmbtu_per_hour"] = 59920 
+        post["ExistingBoiler"]["installed_cost_per_mmbtu_per_hour"] = installed_cost_per_mmbtu_per_hour 
 
         # ghpghx_responses inputs (this is where all the URBANopt outputs go to)
         ghpghx_output = {}

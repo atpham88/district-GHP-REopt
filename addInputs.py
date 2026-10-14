@@ -1,25 +1,24 @@
 
 def addInputs():
-    ##################################################### 
+    ########################################################################################################## 
     # Specify all your building and district energy system inputs in this file #
-    #####################################################
+    ##########################################################################################################
     
     # 1. District inputs
-    #####################################################
+    ##########################################################################################################
     district_file = 'district.csv'  # REQUIRED 
-                                    # This file include GHX size (borehole #, length) and 
-                                    # Site location (lon, lat) 
+                                    # This file includes GHX size (borehole #, length) and 
+                                    # site location (lon, lat) 
 
     # 2. Building inputs
-    #####################################################
+    ##########################################################################################################
     building_file = 'building.xlsx'  # REQUIRED 
-                                    # This file include timeseries of electric consumption, 
-                                    # GHP size, floor area for each building
+                                     # This file includes timeseries of electric consumption, 
+                                     # GHP size, floor area for each building
 
     # 3. Capital amd O&M costs 
-    # OPTIONAL, if not provided ('NA'), 
-    # REopt default values will be used
-    #####################################################
+    # OPTIONAL, if not provided ('NA'), REopt default values will be used
+    ##########################################################################################################
     installed_cost_heatpump_per_ton = 1904                  # GHP installation cost per ton
     replacement_year = 10                                   # Replace GHP equipment after this number of years
     replace_cost_per_ton = 952                              # Cost of replace GHP equipment after replacement_year
@@ -32,7 +31,7 @@ def addInputs():
     # 4. Financials 
     # OPTIONAL, if not provided ('NA'), 
     # REopt default values will be used
-    #####################################################
+    ##########################################################################################################
     macrs_bonus_fraction = 'NA'                    
     macrs_itc_reduction = 'NA'
     federal_itc_fraction = 'NA'
@@ -46,7 +45,7 @@ def addInputs():
     # 6. Utility Tariff
     # REQUIRED
     # Three options, flat rate (utility_rate), urdb label (string), monthly rates, or custom json file
-    #####################################################
+    ##########################################################################################################
     utility_rate = 'custom'         # 'flat', 'label', 'monthly_rates', or 'custom'
     annual_energy_rate = 0.25       # Provide rate if utility_rate = 'flat'
 
