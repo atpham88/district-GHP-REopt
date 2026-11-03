@@ -54,8 +54,7 @@ for f in files_results:
  offtaker_discount_rate_fraction,offtaker_tax_rate_fraction,om_cost_escalation_rate_fraction,
  elec_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,
  utility_tarrif,utility_rate,annual_energy_rate,utility_tarrif,om_cost_per_sqft_year,
- installed_cost_heatpump_per_ton,replacement_year,replace_cost_per_ton,
- installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft,
+ installed_cost_heatpump_per_ton,installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft,
  fuel_cost_per_mmbtu,installed_cost_per_mmbtu_per_hour) = addInputs()
 
 investment_scenario = pd.read_excel(os.path.join(data_path, building_file), sheet_name= "Timeseries")
@@ -205,10 +204,6 @@ if len(building_set) > 0:
                 post["GHP"]["om_cost_per_sqft_year"] = om_cost_per_sqft_year
             if installed_cost_heatpump_per_ton != 'NA':
                 post["GHP"]["installed_cost_heatpump_per_ton"] = installed_cost_heatpump_per_ton
-            if replacement_year != 'NA':
-                post["GHP"]["replacement_year"] = replacement_year
-            if replace_cost_per_ton != 'NA':
-                post["GHP"]["replace_cost_per_ton"] = replace_cost_per_ton
             if installed_cost_ghx_per_ft != 'NA':
                 post["GHP"]["installed_cost_ghx_per_ft"] = installed_cost_ghx_per_ft
             if installed_cost_building_hydronic_loop_per_sqft != 'NA':
