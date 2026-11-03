@@ -20,8 +20,10 @@ def addInputs():
     # OPTIONAL, if not provided ('NA'), REopt default values will be used
     ##########################################################################################################
     installed_cost_heatpump_per_ton = 1904                  # GHP installation cost per ton
-    replacement_year = 10                                   # Replace GHP equipment after this number of years
-    replace_cost_per_ton = 952                              # Cost of replace GHP equipment after replacement_year
+    replacement_year_hvac_equipment = 10                    # Replace HVAC equipment after this number of years
+    replacement_year_circulation_pumps = 5                  # Replace circulation pumps after this number of years
+    replace_cost_per_ton_hvac_equipment = 952               # Cost of replace GHP equipment after replacement_year_hvac_equipment (in $/ton of GHP)
+    replace_cost_dollars_circulation_pumps = 952            # Cost of replace circulation pumps after replacement_year_circulation_pumps (in $)
     installed_cost_ghx_per_ft = 19                          # GHX installation cost per ft
     installed_cost_building_hydronic_loop_per_sqft = 0      # Hydronic loop installation cost per sqft
     om_cost_per_sqft_year = 0                               # O&M cost
@@ -61,7 +63,8 @@ def addInputs():
             offtaker_discount_rate_fraction,offtaker_tax_rate_fraction,om_cost_escalation_rate_fraction,
             elec_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,
             utility_tarrif,utility_rate,annual_energy_rate,utility_tarrif,om_cost_per_sqft_year,
-            installed_cost_heatpump_per_ton,replacement_year,replace_cost_per_ton,
+            installed_cost_heatpump_per_ton,replacement_year_hvac_equipment,replacement_year_circulation_pumps,
+            replace_cost_per_ton_hvac_equipment,replace_cost_dollars_circulation_pumps,
             installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft,
             fuel_cost_per_mmbtu,installed_cost_per_mmbtu_per_hour)
 
