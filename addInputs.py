@@ -16,7 +16,7 @@ def addInputs():
                                      # This file includes timeseries of electric consumption, 
                                      # GHP size, floor area for each building
 
-    # 3. Capital amd O&M costs 
+    # 3. Capital and O&M costs 
     # OPTIONAL, if not provided ('NA'), REopt default values will be used
     ##########################################################################################################
     installed_cost_heatpump_per_ton = 1904                  # GHP installation cost per ton
