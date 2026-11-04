@@ -22,8 +22,8 @@ def addInputs():
     installed_cost_heatpump_per_ton = 1904                  # GHP installation cost per ton
     replacement_year_hvac_equipment = 10                    # Replace HVAC equipment after this number of years
     replacement_year_circulation_pumps = 5                  # Replace circulation pumps after this number of years
-    replace_cost_per_ton_hvac_equipment = 952               # Cost of replace GHP equipment after replacement_year_hvac_equipment (in $/ton of GHP)
-    replace_cost_dollars_circulation_pumps = 10000          # Cost of replace circulation pumps after replacement_year_circulation_pumps (in $)
+    replace_cost_per_ton_hvac_equipment = 952               # Cost of replacing GHP equipment after replacement_year_hvac_equipment (in $/ton of GHP)
+    replace_cost_dollars_circulation_pumps = 10000          # Cost of replacing circulation pumps after replacement_year_circulation_pumps (in $)
     installed_cost_ghx_per_ft = 19                          # GHX installation cost per ft
     installed_cost_building_hydronic_loop_per_sqft = 0      # Hydronic loop installation cost per sqft
     om_cost_per_sqft_year = 0                               # O&M cost
