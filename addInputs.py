@@ -41,6 +41,7 @@ def addInputs():
     offtaker_tax_rate_fraction = 'NA'
     om_cost_escalation_rate_fraction = 'NA'
     elec_cost_escalation_rate_fraction = 'NA'
+    fuel_cost_escalation_rate_fraction = 'NA'
     owner_discount_rate_fraction = 'NA'
     owner_tax_rate_fraction = 'NA'
 
@@ -61,7 +62,7 @@ def addInputs():
     
     return (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,
             offtaker_discount_rate_fraction,offtaker_tax_rate_fraction,om_cost_escalation_rate_fraction,
-            elec_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,
+            elec_cost_escalation_rate_fraction,fuel_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,
             utility_tarrif,utility_rate,annual_energy_rate,utility_tarrif,om_cost_per_sqft_year,
             installed_cost_heatpump_per_ton,replacement_year_hvac_equipment,replacement_year_circulation_pumps,
             replace_cost_per_ton_hvac_equipment,replace_cost_dollars_circulation_pumps,

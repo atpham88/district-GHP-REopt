@@ -52,7 +52,8 @@ for f in files_results:
 ################### READ INPUTS ####################
 (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,
  offtaker_discount_rate_fraction,offtaker_tax_rate_fraction,om_cost_escalation_rate_fraction,
- elec_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,
+ elec_cost_escalation_rate_fraction,fuel_cost_escalation_rate_fraction,
+ owner_discount_rate_fraction,owner_tax_rate_fraction,
  utility_tarrif,utility_rate,annual_energy_rate,utility_tarrif,om_cost_per_sqft_year,
  installed_cost_heatpump_per_ton,replacement_year_hvac_equipment,replacement_year_circulation_pumps,
  replace_cost_per_ton_hvac_equipment,replace_cost_dollars_circulation_pumps,
@@ -189,6 +190,8 @@ if len(building_set) > 0:
             post["Financial"]["owner_tax_rate_fraction"] = owner_tax_rate_fraction
         if (elec_cost_escalation_rate_fraction != 'NA'):
             post["Financial"]["elec_cost_escalation_rate_fraction"] = elec_cost_escalation_rate_fraction
+        if (fuel_cost_escalation_rate_fraction != 'NA'):
+            post["Financial"]["existing_boiler_fuel_cost_escalation_rate_fraction"] = fuel_cost_escalation_rate_fraction
             
         # Read GHP and GHX outputs:
         ghp_size = building_ghp_data.loc[building_ghp_data.index=="GHP_size_ton",building_ghp_data.columns==building_id].iloc[0,0]
