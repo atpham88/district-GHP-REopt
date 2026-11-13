@@ -30,6 +30,7 @@ def addInputs():
     # OPTIONAL, if not provided ('NA'), 
     # REopt default values will be used
     ##########################################################################################################
+    analysis_years = 'NA'
     macrs_bonus_fraction = 'NA'                    
     macrs_itc_reduction = 'NA'
     federal_itc_fraction = 'NA'
@@ -57,7 +58,7 @@ def addInputs():
     
     return (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,
             offtaker_discount_rate_fraction,offtaker_tax_rate_fraction,om_cost_escalation_rate_fraction,
-            elec_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,
+            elec_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,analysis_years,
             utility_tarrif,utility_rate,annual_energy_rate,utility_tarrif,om_cost_per_sqft_year,
             installed_cost_heatpump_per_ton,installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft,
             fuel_cost_per_mmbtu,installed_cost_per_mmbtu_per_hour)
