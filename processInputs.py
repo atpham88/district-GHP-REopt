@@ -244,8 +244,10 @@ if len(building_set) > 0:
         post["Generator"]["min_kw"] = bau_boiler_size_mmbtu_per_hour*293.07
         post["Generator"]["max_kw"] = bau_boiler_size_mmbtu_per_hour*293.07
         post["Generator"]["installed_cost_per_kw"] = 0
-        post["Generator"]["replacement_year"] = replacement_year_bau_system_1
-        post["Generator"]["replace_cost_per_kw"] = replace_cost_bau_per_mmbtu_1*(1/293.07)
+        post["Generator"]["replacement_year_1"] = replacement_year_bau_system_1
+        post["Generator"]["replacement_year_2"] = replacement_year_bau_system_2
+        post["Generator"]["replace_cost_per_kw_1"] = replace_cost_bau_per_mmbtu_1*(1/293.07)
+        post["Generator"]["replace_cost_per_kw_2"] = replace_cost_bau_per_mmbtu_2*(1/293.07)
         
         # ghpghx_responses inputs (this is where all the URBANopt outputs go to)
         ghpghx_output = {}
