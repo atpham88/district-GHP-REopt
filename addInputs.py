@@ -24,11 +24,17 @@ def addInputs():
     replacement_year_circulation_pumps = 5                  # Replace circulation pumps after this number of years
     replace_cost_per_ton_hvac_equipment = 952               # Cost of replacing GHP equipment after replacement_year_hvac_equipment (in $/ton of GHP)
     replace_cost_dollars_circulation_pumps = 10000          # Cost of replacing circulation pumps after replacement_year_circulation_pumps (in $)
+    replacement_year_bau_system_1 = 10                      # Replace BAU HVAC equipment 1 after this number of years
+    replacement_year_bau_system_2 = 5                       # Replace BAU HVAC equipment 2 after this number of years
+    replace_cost_bau_per_mmbtu_1 = 10000                        # Cost of replacing GHP BAU HVAC equipment 1 after replacement_year_bau_system_1 (in $/mmbtu of boiler)
+    replace_cost_bau_per_mmbtu_2 = 10000                        # Cost of replacing GHP BAU HVAC equipment 2 after replacement_year_bau_system_2 (in $)
     installed_cost_ghx_per_ft = 19                          # GHX installation cost per ft
     installed_cost_building_hydronic_loop_per_sqft = 0      # Hydronic loop installation cost per sqft
     om_cost_per_sqft_year = 0                               # O&M cost
     fuel_cost_per_mmbtu = 15                                # Fuel cost of the BAU/backup system
     installed_cost_per_mmbtu_per_hour = 56000               # Installed cost of new boiler (if GHP is not invested)
+    bau_boiler_size_mmbtu_per_hour = 10                     # Size of boiler under BAU
+    ghp_case_boiler_size_mmbtu_per_hour = 10                # Size of boiler under GHP investment scenario
 
     # 4. Financials 
     # OPTIONAL, if not provided ('NA'), 
@@ -63,9 +69,10 @@ def addInputs():
     
     return (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,
             offtaker_discount_rate_fraction,offtaker_tax_rate_fraction,om_cost_escalation_rate_fraction,
-            elec_cost_escalation_rate_fraction,fuel_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,analysis_years,
+            elec_cost_escalation_rate_fraction,fuel_cost_escalation_rate_fraction,owner_discount_rate_fraction,owner_tax_rate_fraction,analysis_years,bau_boiler_size_mmbtu_per_hour,ghp_case_boiler_size_mmbtu_per_hour,
             utility_tarrif,utility_rate,annual_energy_rate,utility_tarrif,om_cost_per_sqft_year,
             installed_cost_heatpump_per_ton,replacement_year_hvac_equipment,replacement_year_circulation_pumps,
+            replacement_year_bau_system_1,replacement_year_bau_system_2,replace_cost_bau_per_mmbtu_1,replace_cost_bau_per_mmbtu_2,
             replace_cost_per_ton_hvac_equipment,replace_cost_dollars_circulation_pumps,
             installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft,
             fuel_cost_per_mmbtu,installed_cost_per_mmbtu_per_hour)

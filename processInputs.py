@@ -53,12 +53,13 @@ for f in files_results:
 (building_file,district_file,macrs_bonus_fraction,macrs_itc_reduction,federal_itc_fraction,
  offtaker_discount_rate_fraction,offtaker_tax_rate_fraction,om_cost_escalation_rate_fraction,
  elec_cost_escalation_rate_fraction,fuel_cost_escalation_rate_fraction,
- owner_discount_rate_fraction,owner_tax_rate_fraction,analysis_years,
- utility_tarrif,utility_rate,annual_energy_rate,utility_tarrif,om_cost_per_sqft_year,
- installed_cost_heatpump_per_ton,replacement_year_hvac_equipment,replacement_year_circulation_pumps,
- replace_cost_per_ton_hvac_equipment,replace_cost_dollars_circulation_pumps,
- installed_cost_ghx_per_ft,installed_cost_building_hydronic_loop_per_sqft,
- fuel_cost_per_mmbtu,installed_cost_per_mmbtu_per_hour) = addInputs()
+ owner_discount_rate_fraction,owner_tax_rate_fraction,analysis_years,bau_boiler_size_mmbtu_per_hour,
+ ghp_case_boiler_size_mmbtu_per_hour,utility_tarrif,utility_rate,annual_energy_rate,
+ utility_tarrif,om_cost_per_sqft_year,installed_cost_heatpump_per_ton,replacement_year_hvac_equipment,
+ replacement_year_circulation_pumps,replacement_year_bau_system_1,replacement_year_bau_system_2,
+ replace_cost_bau_per_mmbtu_1,replace_cost_bau_per_mmbtu_2,replace_cost_per_ton_hvac_equipment,
+ replace_cost_dollars_circulation_pumps,installed_cost_ghx_per_ft,
+ installed_cost_building_hydronic_loop_per_sqft,fuel_cost_per_mmbtu,installed_cost_per_mmbtu_per_hour) = addInputs()
 
 investment_scenario = pd.read_excel(os.path.join(data_path, building_file), sheet_name= "Timeseries")
 building_ghp_data = pd.read_excel(os.path.join(data_path, building_file), sheet_name= "GHP",index_col=0)
@@ -111,40 +112,37 @@ if len(building_set) > 0:
         post["ElectricLoad"]["year"] = 2025
 
         # Space heating load is not needed for URBANopt district GHP analysis but required for BAU analysis and for REopt's formatting purpose,
-        # so, in case it's not needed set that to very small numbers close to 0
+        # so, in case it's set to very small value close to 0
         post["SpaceHeatingLoad"] = {}
 
-        if isBAU == 0:
-            post["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = [0.0000001] * 8760
-        elif isBAU == 1:
-            building_heating_load_tot = investment_scenario['heating_fuel_'+str(building)]/1000
-            
-            # Plotting heating load profiles for each site
-            fig, ax = plt.subplots(figsize=(9,6))
-            plt.xlabel("Date",fontsize=14)
-            plt.ylabel("Building Fuel Consumption (MMBtu)", fontsize=14)
-            #plt.ylim(0,3.5)
-            #if building_id == 1252:
-            #    plt.ylim(0,20)
-            #elif building_id == 39593:
-            #    plt.ylim(0,7.5)
-            #elif building_id == 63944:
-            #    plt.ylim(0,15)
-            #elif building_id == 69264:
-            #    plt.ylim(0,5)
-            #elif building_id == 461703:
-            #    plt.ylim(0,25)
+        # Heating fuel profiles in both BAU and GHP cases
+        building_heating_load_tot = investment_scenario['heating_fuel_'+str(building)]/1000    
+        # Plotting heating load profiles for each site
+        fig, ax = plt.subplots(figsize=(9,6))
+        plt.xlabel("Date",fontsize=14)
+        plt.ylabel("Building Fuel Consumption (MMBtu)", fontsize=14)
+        #plt.ylim(0,3.5)
+        #if building_id == 1252:
+        #    plt.ylim(0,20)
+        #elif building_id == 39593:
+        #    plt.ylim(0,7.5)
+        #elif building_id == 63944:
+        #    plt.ylim(0,15)
+        #elif building_id == 69264:
+        #    plt.ylim(0,5)
+        #elif building_id == 461703:
+        #    plt.ylim(0,25)
 
-            ax.plot(building_heating_load_tot, color = 'lightpink', linewidth=0.5)
-            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan']
-            plt.xticks(np.linspace(0,8760,13), months)
-            plt.title("Fuel Consumption" + " - "+str(building),fontsize=14)
-            fig_path = os.path.join(run_path, "figures")
-            if not os.path.exists(fig_path):
-                os.makedirs(fig_path)
-            fig.savefig(os.path.join(fig_path, "fuel_consumption_building_"+str(building_id)+".png"),dpi=300,bbox_inches='tight', pad_inches=0.1)
+        ax.plot(building_heating_load_tot, color = 'lightpink', linewidth=0.5)
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan']
+        plt.xticks(np.linspace(0,8760,13), months)
+        plt.title("Fuel Consumption" + " - "+str(building),fontsize=14)
+        fig_path = os.path.join(run_path, "figures")
+        if not os.path.exists(fig_path):
+            os.makedirs(fig_path)
+        fig.savefig(os.path.join(fig_path, "fuel_consumption_building_"+str(building_id)+".png"),dpi=300,bbox_inches='tight', pad_inches=0.1)
 
-            post["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_heating_load_tot)
+        post["SpaceHeatingLoad"]["fuel_loads_mmbtu_per_hour"] = list(building_heating_load_tot)
 
         # Utility tariff
         post["ElectricTariff"] = {}
@@ -235,8 +233,17 @@ if len(building_set) > 0:
         # ExistingBoiler settings for BAU
         post["ExistingBoiler"] = {}
         post["ExistingBoiler"]["fuel_cost_per_mmbtu"] = fuel_cost_per_mmbtu
-        post["ExistingBoiler"]["installed_cost_per_mmbtu_per_hour"] = installed_cost_per_mmbtu_per_hour 
+        #post["ExistingBoiler"]["installed_cost_per_mmbtu_per_hour"] = installed_cost_per_mmbtu_per_hour
 
+        # Boiler settings for BAU and GHP
+        post["Generator"] = {}
+        post["Generator"]["fuel_cost_per_gallon"] = 0
+        post["Generator"]["min_kw"] = bau_boiler_size_mmbtu_per_hour*293.07
+        post["Generator"]["max_kw"] = bau_boiler_size_mmbtu_per_hour*293.07
+        post["Generator"]["installed_cost_per_kw"] = 0
+        post["Generator"]["replacement_year"] = replacement_year_bau_system_1
+        post["Generator"]["replace_cost_per_kw"] = replace_cost_bau_per_mmbtu_1*(1/293.07)
+        
         # ghpghx_responses inputs (this is where all the URBANopt outputs go to)
         ghpghx_output = {}
         ghpghx_output["outputs"] = {}
