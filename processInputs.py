@@ -116,7 +116,10 @@ if len(building_set) > 0:
         post["SpaceHeatingLoad"] = {}
 
         # Heating fuel profiles in both BAU and GHP cases
-        building_heating_load_tot = investment_scenario['heating_fuel_'+str(building)]/1000    
+        if 'heating_fuel_'+str(building) in investment_scenario.columns:
+            building_heating_load_tot = investment_scenario['heating_fuel_'+str(building)]/1000
+        else:
+            building_heating_load_tot = [0.000000001] * 8760
         # Plotting heating load profiles for each site
         fig, ax = plt.subplots(figsize=(9,6))
         plt.xlabel("Date",fontsize=14)
